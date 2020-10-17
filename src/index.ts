@@ -35,7 +35,8 @@ import defaultCmd from './commands/defaultCmd';
 // import deployments from './commands/deployments';
 // import help from './commands/help';
 // import list from './commands/list';
-// import login from './commands/login';
+import login from './commands/login';
+// TODO: Cleanup
 // import logout from './commands/logout';
 // import logs from './commands/logs';
 // import openCmd from './commands/openCmd';
@@ -59,24 +60,24 @@ commander
   .usage(`<command> [options]`)
   .description(`${PROJECT_NAME} - The Google Sheets CLI`);
 
+/**
+ * Logs the user in. Saves the client credentials to an rc file.
+ * @name login
+ * @param {string?} [--no-localhost] Do not run a local server, manually enter code instead.
+ * @param {string?} [--creds] Relative path to credentials (from GCP).
+ * @example login (uses default clsheets credentials)
+ * @example login --creds credentials.json (uses your credentials file).
+ * @see test
+ */
+commander
+  .command('login')
+  .description('Log in to script.google.com')
+  .option('--no-localhost', 'Do not run a local server, manually enter code instead')
+  .option('--creds <file>', 'Relative path to credentials (from GCP).')
+  .option('--status', 'Print who is logged in')
+  .action(handleError(login));
+
 // TODO: Cleanup
-// /**
-//  * Logs the user in. Saves the client credentials to an rc file.
-//  * @name login
-//  * @param {string?} [--no-localhost] Do not run a local server, manually enter code instead.
-//  * @param {string?} [--creds] Relative path to credentials (from GCP).
-//  * @example login (uses default clsheets credentials)
-//  * @example login --creds credentials.json (uses your credentials file).
-//  * @see test
-//  */
-// commander
-//   .command('login')
-//   .description('Log in to script.google.com')
-//   .option('--no-localhost', 'Do not run a local server, manually enter code instead')
-//   .option('--creds <file>', 'Relative path to credentials (from GCP).')
-//   .option('--status', 'Print who is logged in')
-//   .action(handleError(login));
-//
 // /**
 //  * Logs out the user by deleteing client credentials.
 //  * @name logout

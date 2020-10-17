@@ -2,16 +2,17 @@
 // import path from 'path';
 // import chalk from 'chalk';
 import { Spinner } from 'cli-spinner';
+import fs from 'fs-extra';
 // TODO: Cleanup
-// import fs from 'fs-extra';
 // import { script_v1 } from 'googleapis';
 // import pluralize from 'pluralize';
-// import { ClaspToken, DOT, DOTFILE, ProjectSettings } from './dotfile';
+import { /*ClaspToken, TODO: Cleanup*/ DOT/*, DOTFILE, ProjectSettings TODO: Cleanup*/ } from './dotfile';
+// TODO: Cleanup
 // import { projectIdPrompt } from './inquirer';
 // import { URL } from './urls';
 //
 // const ucfirst = (str: string) => str && `${str[0].toUpperCase()}${str.slice(1)}`;
-// const isOnline: (options?: { timeout?: number; version?: 'v4'|'v6'; }) => boolean = require('is-online');
+const isOnline: (options?: { timeout?: number; version?: 'v4'|'v6'; }) => boolean = require('is-online');
 
 // Names / Paths
 export const PROJECT_NAME = 'clsheets';
@@ -34,18 +35,19 @@ export const PROJECT_NAME = 'clsheets';
 //   client_secret: string;
 //   redirect_uris: string[];
 // }
-// export interface ClaspCredentials {
-//   installed: ClaspCredentialsInstalled;
-// }
-//
-// /**
-//  * Checks if OAuth client settings rc file exists.
-//  * @param  {boolean} local check ./clsheetsrc.json instead of ~/.clsheetsrc.json
-//  * @return {boolean}
-//  */
-// export const hasOauthClientSettings = (local = false): boolean =>
-//   local ? fs.existsSync(DOT.RC.ABSOLUTE_LOCAL_PATH) : fs.existsSync(DOT.RC.ABSOLUTE_PATH);
-//
+export interface ClaspCredentials {
+  // TODO: Cleanup
+  // installed: ClaspCredentialsInstalled;
+}
+
+/**
+ * Checks if OAuth client settings rc file exists.
+ * @param  {boolean} local check ./clsheetsrc.json instead of ~/.clsheetsrc.json
+ * @return {boolean}
+ */
+export const hasOauthClientSettings = (local = false): boolean =>
+    local ? fs.existsSync(DOT.RC.ABSOLUTE_LOCAL_PATH) : fs.existsSync(DOT.RC.ABSOLUTE_PATH);
+
 // /**
 //  * Gets the OAuth client settings from rc file.
 //  * @param {boolean} local If true, gets the local OAuth settings. Global otherwise.
@@ -61,8 +63,8 @@ export const PROJECT_NAME = 'clsheets';
 
 // Error messages (some errors take required params)
 export const ERROR = {
+  ACCESS_TOKEN: `Error retrieving access token: `,
 // TODO: Cleanup
-//   ACCESS_TOKEN: `Error retrieving access token: `,
 //   BAD_CREDENTIALS_FILE: 'Incorrect credentials file format.',
 //   BAD_REQUEST: (message: string) => `Error: ${message}
 // Your credentials may be invalid. Try logging in again.`,
@@ -82,7 +84,8 @@ Forgot ${PROJECT_NAME} commands? Get help:\n  ${PROJECT_NAME} --help`,
 //   FS_FILE_WRITE: 'Could not write file.',
 //   INVALID_JSON: `Input params not Valid JSON string. Please fix and try again`,
 //   LOGGED_IN_LOCAL: `Warning: You seem to already be logged in *locally*. You have a ./.clsheetsrc.json`,
-//   LOGGED_IN_GLOBAL: `Warning: You seem to already be logged in *globally*. You have a ~/.clsheetsrc.json`,
+  LOGGED_IN_GLOBAL: `Warning: You seem to already be logged in *globally*. You have a ~/.clsheetsrc.json`,
+// TODO: Cleanup
 //   LOGGED_OUT: `\nCommand failed. Please login. (${PROJECT_NAME} login)`,
 //   LOGS_NODATA: 'StackDriver logs query returned no data.',
 //   LOGS_UNAVAILABLE: 'StackDriver logs are getting ready, try again soon.',
@@ -124,18 +127,19 @@ Forgot ${PROJECT_NAME} commands? Get help:\n  ${PROJECT_NAME} --help`,
 // Did you provide the correct projectID?`,
 };
 
+// Log messages (some logs take required params)
+export const LOG = {
 // TODO: Cleanup
-// // Log messages (some logs take required params)
-// export const LOG = {
 //   ASK_PROJECT_ID: `What is your GCP projectId?`,
 //   NOT_LOGGED_IN: 'You are not logged in.',
 //   LOGGED_IN_UNKNOWN: 'You are logged in as an unknown user.',
 //   LOGGED_IN_AS: (email: string) => `You are logged in as ${email}.`,
 //   AUTH_CODE: 'Enter the code from that page here: ',
-//   // TODO: Make AUTH_PAGE_SUCCESSFUL show an HTML page with something useful!
-//   AUTH_PAGE_SUCCESSFUL: `Logged in! You may close this page. `, // HTML Redirect Page
-//   AUTH_SUCCESSFUL: `Authorization successful.`,
-//   AUTHORIZE: (authUrl: string) => `🔑 Authorize ${PROJECT_NAME} by visiting this url:\n${authUrl}\n`,
+  // TODO: Make AUTH_PAGE_SUCCESSFUL show an HTML page with something useful!
+  AUTH_PAGE_SUCCESSFUL: `Logged in! You may close this page. `, // HTML Redirect Page
+  AUTH_SUCCESSFUL: `Authorization successful.`,
+  AUTHORIZE: (authUrl: string) => `🔑 Authorize ${PROJECT_NAME} by visiting this url:\n${authUrl}\n`,
+// TODO: Cleanup
 //   CLONE_SUCCESS: (fileNum: number) => `Warning: files in subfolder are not accounted for unless you set a '${
 //     DOT.IGNORE.PATH
 //   }' file.
@@ -165,7 +169,8 @@ Forgot ${PROJECT_NAME} commands? Get help:\n  ${PROJECT_NAME} --help`,
 // (including "project-id-")`,
 //   GIVE_DESCRIPTION: 'Give a description: ',
 //   LOCAL_CREDS: `Using local credentials: ${DOT.RC.LOCAL_DIR}${DOT.RC.NAME} 🔐 `,
-//   LOGIN: (isLocal: boolean) => `Logging in ${isLocal ? 'locally' : 'globally'}...`,
+  LOGIN: (isLocal: boolean) => `Logging in ${isLocal ? 'locally' : 'globally'}...`,
+// TODO: Cleanup
 //   LOGS_SETUP: 'Finished setting up logs.\n',
 //   NO_GCLOUD_PROJECT: `No projectId found. Running ${PROJECT_NAME} logs --setup.`,
 //   OPEN_CREDS: (projectId: string) => `Opening credentials page: ${URL.CREDS(projectId)}`,
@@ -179,11 +184,12 @@ Forgot ${PROJECT_NAME} commands? Get help:\n  ${PROJECT_NAME} --help`,
 //   PUSH_WATCH_UPDATED: (filename: string) => `- Updated: ${filename}`,
 //   PUSH_WATCH: 'Watching for changed files...\n',
 //   PUSHING: 'Pushing files...',
-//   SAVED_CREDS: (isLocalCreds: boolean) =>
-//     isLocalCreds
-//     ? `Local credentials saved to: ${DOT.RC.LOCAL_DIR}${DOT.RC.ABSOLUTE_LOCAL_PATH}.\n` +
-//     `*Be sure to never commit this file!* It's basically a password.`
-//     : `Default credentials saved to: ${DOT.RC.PATH} (${DOT.RC.ABSOLUTE_PATH}).`,
+  SAVED_CREDS: (isLocalCreds: boolean) =>
+    isLocalCreds
+    ? `Local credentials saved to: ${DOT.RC.LOCAL_DIR}${DOT.RC.ABSOLUTE_LOCAL_PATH}.\n` +
+    `*Be sure to never commit this file!* It's basically a password.`
+    : `Default credentials saved to: ${DOT.RC.PATH} (${DOT.RC.ABSOLUTE_PATH}).`,
+// TODO: Cleanup
 //   SCRIPT_LINK: (scriptId: string) => `https://script.google.com/d/${scriptId}/edit`,
 //   // TODO: `SCRIPT_RUN` is never used
 //   SCRIPT_RUN: (functionName: string) => `Executing: ${functionName}`,
@@ -209,7 +215,7 @@ Forgot ${PROJECT_NAME} commands? Get help:\n  ${PROJECT_NAME} --help`,
 //
 // 2. Authenticate clsheets with your credentials json file:
 //     clsheets login --creds <client_credentials.json>`,
-// };
+};
 
 /*export TODO: Cleanup*/ const spinner = new Spinner();
 
@@ -229,27 +235,27 @@ export const logError = (err: any, description = '', code = 1): never => {
   // TODO(timmerman) This will need to be standardized. Waiting for the API to
   // change error model. Don't review this method now.
   if (err && typeof err.error === 'string') {
-    throw 'Not implemented: 8ef7adab-4473-4887-b645-d9a30636786c'; // TODO: Cleanup
+    throw new Error('Not implemented: 8ef7adab-4473-4887-b645-d9a30636786c'); // TODO: Cleanup
     // description = JSON.parse(err.error).error;
   } else if (
     (err && err.statusCode === 401) ||
     (err && err.error && err.error.error && err.error.error.code === 401)
   ) {
-    throw 'Not implemented: c7e4858a-55c1-4fb6-bbb1-759f26b505d1'; // TODO: Cleanup
+    throw new Error('Not implemented: c7e4858a-55c1-4fb6-bbb1-759f26b505d1'); // TODO: Cleanup
     // // TODO check if local creds exist:
     // //  localOathSettingsExist() ? ERROR.UNAUTHENTICATED : ERROR.UNAUTHENTICATED_LOCAL
     // description = ERROR.UNAUTHENTICATED;
   } else if (err && ((err.error && err.error.code === 403) || err.code === 403)) {
-    throw 'Not implemented: 43ba0834-fe3e-4a06-99d7-7f5093e4032b'; // TODO: Cleanup
+    throw new Error('Not implemented: 43ba0834-fe3e-4a06-99d7-7f5093e4032b'); // TODO: Cleanup
     // // TODO check if local creds exist:
     // //  localOathSettingsExist() ? ERROR.PERMISSION_DENIED : ERROR.PERMISSION_DENIED_LOCAL
     // description = ERROR.PERMISSION_DENIED;
   } else if (err && err.code === 429) {
-    throw 'Not implemented: e3ffccd1-5907-42f7-b4fd-0f09433642c7'; // TODO: Cleanup
+    throw new Error('Not implemented: e3ffccd1-5907-42f7-b4fd-0f09433642c7'); // TODO: Cleanup
     // description = ERROR.RATE_LIMIT;
   } else {
     if (err && err.error) {
-      throw 'Not implemented: 4c56df0e-c2db-4d4c-8213-427ef6382add'; // TODO: Cleanup
+      throw new Error('Not implemented: 4c56df0e-c2db-4d4c-8213-427ef6382add'); // TODO: Cleanup
       // console.error(`~~ API ERROR (${err.statusCode || err.error.code})`);
       // console.error(err.error);
     }
@@ -325,30 +331,32 @@ export const logError = (err: any, description = '', code = 1): never => {
 //   const extension = filePath.substr(filePath.lastIndexOf('.') + 1).toUpperCase();
 //   return extension === 'GS' || extension === 'JS' ? 'SERVER_JS' : extension;
 // }
-//
-// /**
-//  * Checks if the network is available. Gracefully exits if not.
-//  */
-// export async function safeIsOnline() {
-//   // If using a proxy, return true since `isOnline` doesn't work.
-//   // @see https://github.com/googleapis/google-api-nodejs-client#using-a-proxy
-//   if (process.env.HTTP_PROXY || process.env.HTTPS_PROXY) {
-//     return true;
-//   } else {
-//     return await isOnline();
-//   }
-// }
-//
-// /**
-//  * Checks if the network is available. Gracefully exits if not.
-//  */
-// export async function checkIfOnline() {
-//   if (await safeIsOnline()) {
-//     return true;
-//   }
-//   return logError(null, ERROR.OFFLINE);
-// }
-//
+
+/**
+ * Checks if the network is available. Gracefully exits if not.
+ */
+/*export TODO: Cleanup*/ async function safeIsOnline() {
+  // If using a proxy, return true since `isOnline` doesn't work.
+  // @see https://github.com/googleapis/google-api-nodejs-client#using-a-proxy
+  if (process.env.HTTP_PROXY || process.env.HTTPS_PROXY) {
+    throw new Error('Not implemented: 4b0008b4-09bb-46ac-8835-633d26a4d422'); // TODO: Cleanup
+    // return true;
+  } else {
+    return await isOnline();
+  }
+}
+
+/**
+ * Checks if the network is available. Gracefully exits if not.
+ */
+export async function checkIfOnline() {
+  if (await safeIsOnline()) {
+    return true;
+  }
+  throw new Error('Not implemented: 4ae972dd-0ef6-4d6b-9199-a450e5f842c1'); // TODO: Cleanup
+  // return logError(null, ERROR.OFFLINE);
+}
+
 // /**
 //  * Saves the project settings in the project dotfile.
 //  * @param {ProjectSettings} newProjectSettings The project settings
