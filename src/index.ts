@@ -1,32 +1,33 @@
 #!/usr/bin/env node
 
+/**
+ * @license
+ * Copyright Google Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+/**
+ * clsheets – The Google Sheets CLI
+ */
+
+import { PROJECT_NAME/*, handleError TODO: Cleanup*/ } from './utils';
+
 // TODO: Cleanup
-// /**
-//  * @license
-//  * Copyright Google Inc.
-//  *
-//  * Licensed under the Apache License, Version 2.0 (the "License");
-//  * you may not use this file except in compliance with the License.
-//  * You may obtain a copy of the License at
-//  *
-//  *     https://www.apache.org/licenses/LICENSE-2.0
-//  *
-//  * Unless required by applicable law or agreed to in writing, software
-//  * distributed under the License is distributed on an "AS IS" BASIS,
-//  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-//  * See the License for the specific language governing permissions and
-//  * limitations under the License.
-//  */
-//
-// /**
-//  * clsheets – The Apps Script CLI
-//  */
-//
-// import { PROJECT_NAME, handleError } from './utils';
-//
 // import apis from './commands/apis';
 // import clone from './commands/clone';
-// import commander from 'commander';
+import commander from 'commander';
+// TODO: Cleanup
 // import create from './commands/create';
 // import defaultCmd from './commands/defaultCmd';
 // import deploy from './commands/deploy';
@@ -45,17 +46,19 @@
 // import undeploy from './commands/undeploy';
 // import version from './commands/version';
 // import versions from './commands/versions';
-//
-// // CLI
-//
-// /**
-//  * Set global CLI configurations
-//  */
-// commander
-//   .name(PROJECT_NAME)
-//   .usage(`<command> [options]`)
-//   .description(`${PROJECT_NAME} - The Apps Script CLI`);
-//
+
+// CLI
+
+// noinspection HtmlDeprecatedTag
+/**
+ * Set global CLI configurations
+ */
+commander
+  .name(PROJECT_NAME)
+  .usage(`<command> [options]`)
+  .description(`${PROJECT_NAME} - The Google Sheets CLI`);
+
+// TODO: Cleanup
 // /**
 //  * Logs the user in. Saves the client credentials to an rc file.
 //  * @name login
@@ -354,10 +357,10 @@
 // commander.option('-v, --version').on('option:version', () => {
 //   console.log(require('../package.json').version);
 // });
-//
-// // defaults to help if commands are not provided
-// if (!process.argv.slice(2).length) {
-//   commander.outputHelp();
-// }
-// // User input is provided from the process' arguments
-// commander.parse(process.argv);
+
+// defaults to help if commands are not provided
+if (!process.argv.slice(2).length) {
+  commander.outputHelp();
+}
+// User input is provided from the process' arguments
+commander.parse(process.argv);

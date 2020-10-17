@@ -11,9 +11,10 @@
 //
 // const ucfirst = (str: string) => str && `${str[0].toUpperCase()}${str.slice(1)}`;
 // const isOnline: (options?: { timeout?: number; version?: 'v4'|'v6'; }) => boolean = require('is-online');
-//
-// // Names / Paths
-// export const PROJECT_NAME = 'clsheets';
+
+// Names / Paths
+export const PROJECT_NAME = 'clsheets';
+// TODO: Cleanup
 // export const PROJECT_MANIFEST_BASENAME = 'appsscript';
 // export const PROJECT_MANIFEST_FILENAME = PROJECT_MANIFEST_BASENAME + '.json';
 //
