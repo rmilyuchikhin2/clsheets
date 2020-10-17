@@ -89,17 +89,14 @@ export async function authorize(options: {
     // Set OAuth2 Client Options
     let oAuth2ClientOptions: OAuth2ClientOptions;
     if (options.creds) {
-      // noinspection ExceptionCaughtLocallyJS
-      throw new Error('Not implemented: 2058bada-333b-4b6a-9295-7e806a4e13e3'); // TODO: Cleanup
-      // // if we passed our own creds
-      // // Use local credentials
-      // console.log(LOG.CREDS_FROM_PROJECT(options.creds.installed.project_id));
-      // const localOAuth2ClientOptions: OAuth2ClientOptions = {
-      //   clientId: options.creds.installed.client_id,
-      //   clientSecret: options.creds.installed.client_secret,
-      //   redirectUri: options.creds.installed.redirect_uris[0],
-      // };
-      // oAuth2ClientOptions = localOAuth2ClientOptions;
+      // if we passed our own creds
+      // Use local credentials
+      console.log(LOG.CREDS_FROM_PROJECT(options.creds.installed.project_id));
+      oAuth2ClientOptions = {
+        clientId: options.creds.installed.client_id,
+        clientSecret: options.creds.installed.client_secret,
+        redirectUri: options.creds.installed.redirect_uris[0],
+      };
     } else {
       // Use global credentials
       oAuth2ClientOptions = {
@@ -111,8 +108,8 @@ export async function authorize(options: {
 
     // Set scopes
     let scope = (options.creds) ?
-      (() => { throw new Error('Not implemented: 9a2eecce-e42f-4305-9f78-256af295bfa8'); })() /*// Set scopes to custom scopes
-      options.scopes TODO: Cleanup*/ : [
+      // Set scopes to custom scopes
+      options.scopes : [
           // Default to clsheets scopes
           'https://www.googleapis.com/auth/userinfo.email', // User email address
           // TODO: Cleanup
@@ -158,19 +155,18 @@ export async function authorize(options: {
     let claspToken: ClaspToken;
     let dotfile: Dotfile;
     if (options.creds) {
+      dotfile = DOTFILE.RC_LOCAL();
       // noinspection ExceptionCaughtLocallyJS
-      throw new Error('Not implemented: 5a9aa754-94d4-4d82-9920-0ec4ada3aa52'); // TODO: Cleanup
-      // dotfile = DOTFILE.RC_LOCAL();
-      // // Save local ClaspCredentials.
-      // claspToken = {
-      //   token,
-      //   oauth2ClientSettings: {
-      //     clientId: options.creds.installed.client_id,
-      //     clientSecret: options.creds.installed.client_secret,
-      //     redirectUri: options.creds.installed.redirect_uris[0],
-      //   },
-      //   isLocalCreds: true,
-      // };
+      // Save local ClaspCredentials.
+      claspToken = {
+        token,
+        oauth2ClientSettings: {
+          clientId: options.creds.installed.client_id,
+          clientSecret: options.creds.installed.client_secret,
+          redirectUri: options.creds.installed.redirect_uris[0],
+        },
+        isLocalCreds: true,
+      };
     } else {
       dotfile = DOTFILE.RC;
       // Save global ClaspCredentials.

@@ -14,8 +14,8 @@
 
 import os from 'os';
 import path from 'path';
+import findUp from 'find-up';
 // TODO: Cleanup
-// import findUp from 'find-up';
 // import fs from 'fs-extra';
 // import { Credentials } from 'google-auth-library';
 // import { OAuth2ClientOptions } from 'google-auth-library/build/src/auth/oauth2client';
@@ -68,14 +68,15 @@ export const DOT = {
     //   NAME: `${PROJECT_NAME}ignore`,
     //   PATH: `.${PROJECT_NAME}ignore`,
     // },
-    // /**
-    //  * This dotfile saves clsheets project information, local to project directory.
-    //  */
-    // PROJECT: {
-    //   DIR: path.join('.', '/'), // Relative to where the command is run. See DOTFILE.PROJECT()
-    //   NAME: `${PROJECT_NAME}.json`,
-    //   PATH: `.${PROJECT_NAME}.json`,
-    // },
+    /**
+     * This dotfile saves clsheets project information, local to project directory.
+     */
+    PROJECT: {
+        // TODO: Cleanup
+        // DIR: path.join('.', '/'), // Relative to where the command is run. See DOTFILE.PROJECT()
+        // NAME: `${PROJECT_NAME}.json`,
+        PATH: `.${PROJECT_NAME}.json`,
+    },
     /**
      * This dotfile saves auth information. Should never be committed.
      * There are 2 types: personal & global:
@@ -143,11 +144,11 @@ export const DOTFILE = {
     // },
     // Stores {ClaspCredentials}
     RC: dotf(DOT.RC.DIR, DOT.RC.NAME),
-    // // Stores {ClaspCredentials}
-    // RC_LOCAL: () => {
-    //   const localPath = findUp.sync(DOT.PROJECT.PATH);
-    //   return dotf(localPath ? path.dirname(localPath) : DOT.RC.LOCAL_DIR, DOT.RC.NAME);
-    // },
+    // Stores {ClaspCredentials}
+    RC_LOCAL: () => {
+        const localPath = findUp.sync(DOT.PROJECT.PATH);
+        return dotf(localPath ? path.dirname(localPath) : DOT.RC.LOCAL_DIR, DOT.RC.NAME);
+    },
 };
 
 /**

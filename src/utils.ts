@@ -9,8 +9,9 @@ import fs from 'fs-extra';
 import { /*ClaspToken, TODO: Cleanup*/ DOT/*, DOTFILE, ProjectSettings TODO: Cleanup*/ } from './dotfile';
 // TODO: Cleanup
 // import { projectIdPrompt } from './inquirer';
-// import { URL } from './urls';
-//
+import { URL } from './urls';
+
+// TODO: Cleanup
 // const ucfirst = (str: string) => str && `${str[0].toUpperCase()}${str.slice(1)}`;
 const isOnline: (options?: { timeout?: number; version?: 'v4'|'v6'; }) => boolean = require('is-online');
 
@@ -19,25 +20,25 @@ export const PROJECT_NAME = 'clsheets';
 // TODO: Cleanup
 // export const PROJECT_MANIFEST_BASENAME = 'appsscript';
 // export const PROJECT_MANIFEST_FILENAME = PROJECT_MANIFEST_BASENAME + '.json';
-//
-// /**
-//  * The installed credentials. This is a file downloaded from console.developers.google.com
-//  * Credentials > OAuth 2.0 client IDs > Type:Other > Download
-//  * Usually called: creds.json
-//  * @see https://console.developers.google.com/apis/credentials
-//  */
-// interface ClaspCredentialsInstalled {
-//   client_id: string;
-//   project_id: string;
-//   auth_uri: string;
-//   token_uri: string;
-//   auth_provider_x509_cert_url: string;
-//   client_secret: string;
-//   redirect_uris: string[];
-// }
-export interface ClaspCredentials {
+
+/**
+ * The installed credentials. This is a file downloaded from console.developers.google.com
+ * Credentials > OAuth 2.0 client IDs > Type:Other > Download
+ * Usually called: creds.json
+ * @see https://console.developers.google.com/apis/credentials
+ */
+interface ClaspCredentialsInstalled {
+  client_id: string;
+  project_id: string;
   // TODO: Cleanup
-  // installed: ClaspCredentialsInstalled;
+  // auth_uri: string;
+  // token_uri: string;
+  // auth_provider_x509_cert_url: string;
+  client_secret: string;
+  redirect_uris: string[];
+}
+export interface ClaspCredentials {
+  installed: ClaspCredentialsInstalled;
 }
 
 /**
@@ -48,6 +49,7 @@ export interface ClaspCredentials {
 export const hasOauthClientSettings = (local = false): boolean =>
     local ? fs.existsSync(DOT.RC.ABSOLUTE_LOCAL_PATH) : fs.existsSync(DOT.RC.ABSOLUTE_PATH);
 
+// TODO: Cleanup
 // /**
 //  * Gets the OAuth client settings from rc file.
 //  * @param {boolean} local If true, gets the local OAuth settings. Global otherwise.
@@ -83,7 +85,7 @@ Forgot ${PROJECT_NAME} commands? Get help:\n  ${PROJECT_NAME} --help`,
 //   FS_DIR_WRITE: 'Could not create directory.',
 //   FS_FILE_WRITE: 'Could not write file.',
 //   INVALID_JSON: `Input params not Valid JSON string. Please fix and try again`,
-//   LOGGED_IN_LOCAL: `Warning: You seem to already be logged in *locally*. You have a ./.clsheetsrc.json`,
+  LOGGED_IN_LOCAL: `Warning: You seem to already be logged in *locally*. You have a ./.clsheetsrc.json`,
   LOGGED_IN_GLOBAL: `Warning: You seem to already be logged in *globally*. You have a ~/.clsheetsrc.json`,
 // TODO: Cleanup
 //   LOGGED_OUT: `\nCommand failed. Please login. (${PROJECT_NAME} login)`,
@@ -155,7 +157,8 @@ export const LOG = {
 //     `Created new ${getScriptTypeName(filetype)} script: ${URL.SCRIPT(scriptId)}`,
 //   CREATE_PROJECT_START: (title: string) => `Creating new script: ${title}...`,
 //   CREDENTIALS_FOUND: 'Credentials found, using those to login...',
-//   CREDS_FROM_PROJECT: (projectId: string) => `Using credentials located here:\n${URL.CREDS(projectId)}\n`,
+  CREDS_FROM_PROJECT: (projectId: string) => `Using credentials located here:\n${URL.CREDS(projectId)}\n`,
+// TODO: Cleanup
 //   DEFAULT_CREDENTIALS: 'No credentials given, continuing with default...',
 //   DEPLOYMENT_CREATE: 'Creating deployment...',
 //   DEPLOYMENT_DNE: 'No deployed versions of script.',

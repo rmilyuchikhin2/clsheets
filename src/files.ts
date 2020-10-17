@@ -19,10 +19,11 @@
 //   logError,
 //   spinner,
 // } from './utils';
-//
-// // @see https://nodejs.org/api/fs.html#fs_fs_readfilesync_path_options
-// export const FS_OPTIONS = { encoding: 'utf8' };
-//
+
+// @see https://nodejs.org/api/fs.html#fs_fs_readfilesync_path_options
+export const FS_OPTIONS = { encoding: 'utf8' };
+
+// TODO: Cleanup
 // // An Apps Script API File
 // interface AppsScriptFile {
 //   name: string;
