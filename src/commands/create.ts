@@ -19,8 +19,8 @@ import {
  * @param cmd.type {string} The type of the Apps Script project.
  * @param cmd.title {string} The title of the Apps Script project's file
  * @param cmd.parentId {string} The Drive ID of the G Suite doc this script is bound to.
- * @param cmd.rootDir {string} Specifies the local directory in which clasp will store your project files.
- *                    If not specified, clasp will default to the current directory.
+ * @param cmd.rootDir {string} Specifies the local directory in which clsheets will store your project files.
+ *                    If not specified, clsheets will default to the current directory.
  */
 export default async (cmd: { type: string; title: string; parentId: string; rootDir: string }) => {
   // Handle common errors.

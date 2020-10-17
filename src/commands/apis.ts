@@ -15,10 +15,10 @@ import { serviceusage_v1 } from 'googleapis';
  */
 export default async (options: { open?: string }) => {
   await loadAPICredentials();
-  const subcommand: string = process.argv[3]; // clasp apis list => "list"
-  const serviceName = process.argv[4]; // clasp apis enable drive => "drive"
+  const subcommand: string = process.argv[3]; // clsheets apis list => "list"
+  const serviceName = process.argv[4]; // clsheets apis enable drive => "drive"
 
-  // clasp apis --open
+  // clsheets apis --open
   if (options.open) {
     const apisUrl = URL.APIS(await getProjectId());
     console.log(apisUrl);
@@ -106,9 +106,9 @@ export default async (options: { open?: string }) => {
       command.list();
 
       console.log(`# Try these commands:
-- clasp apis list
-- clasp apis enable slides
-- clasp apis disable slides`);
+- clsheets apis list
+- clsheets apis enable slides
+- clsheets apis disable slides`);
     },
   };
   if (command[subcommand]) {

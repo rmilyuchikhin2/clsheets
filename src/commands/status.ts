@@ -4,7 +4,7 @@ import { getProjectFiles, logFileList } from '../files';
 import { isValidManifest } from '../manifest';
 
 /**
- * Displays the status of which Apps Script files are ignored from .claspignore
+ * Displays the status of which Apps Script files are ignored from .clsheetsignore
  * @param cmd.json {boolean} Displays the status in json format.
  */
 export default async (cmd: { json: boolean } = { json: false }) => {

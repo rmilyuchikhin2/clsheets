@@ -10,8 +10,8 @@ import status from './status';
  * Prompts the user if no script ID is provided.
  * @param scriptId {string} The Apps Script project ID or project URL to fetch.
  * @param versionNumber {string} An optional version to pull the script from.
- * @param cmd.rootDir {string} Specifies the local directory in which clasp will store your project files.
- *                    If not specified, clasp will default to the current directory.
+ * @param cmd.rootDir {string} Specifies the local directory in which clsheets will store your project files.
+ *                    If not specified, clsheets will default to the current directory.
  */
 export default async (scriptId: string, versionNumber: number, cmd: { rootDir: string }) => {
   await checkIfOnline();

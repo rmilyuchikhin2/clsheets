@@ -12,7 +12,7 @@ const ucfirst = (str: string) => str && `${str[0].toUpperCase()}${str.slice(1)}`
 const isOnline: (options?: { timeout?: number; version?: 'v4'|'v6'; }) => boolean = require('is-online');
 
 // Names / Paths
-export const PROJECT_NAME = 'clasp';
+export const PROJECT_NAME = 'clsheets';
 export const PROJECT_MANIFEST_BASENAME = 'appsscript';
 export const PROJECT_MANIFEST_FILENAME = PROJECT_MANIFEST_BASENAME + '.json';
 
@@ -37,7 +37,7 @@ export interface ClaspCredentials {
 
 /**
  * Checks if OAuth client settings rc file exists.
- * @param  {boolean} local check ./clasprc.json instead of ~/.clasprc.json
+ * @param  {boolean} local check ./clsheetsrc.json instead of ~/.clsheetsrc.json
  * @return {boolean}
  */
 export const hasOauthClientSettings = (local = false): boolean =>
@@ -76,13 +76,13 @@ Forgot ${PROJECT_NAME} commands? Get help:\n  ${PROJECT_NAME} --help`,
   FS_DIR_WRITE: 'Could not create directory.',
   FS_FILE_WRITE: 'Could not write file.',
   INVALID_JSON: `Input params not Valid JSON string. Please fix and try again`,
-  LOGGED_IN_LOCAL: `Warning: You seem to already be logged in *locally*. You have a ./.clasprc.json`,
-  LOGGED_IN_GLOBAL: `Warning: You seem to already be logged in *globally*. You have a ~/.clasprc.json`,
+  LOGGED_IN_LOCAL: `Warning: You seem to already be logged in *locally*. You have a ./.clsheetsrc.json`,
+  LOGGED_IN_GLOBAL: `Warning: You seem to already be logged in *globally*. You have a ~/.clsheetsrc.json`,
   LOGGED_OUT: `\nCommand failed. Please login. (${PROJECT_NAME} login)`,
   LOGS_NODATA: 'StackDriver logs query returned no data.',
   LOGS_UNAVAILABLE: 'StackDriver logs are getting ready, try again soon.',
   NO_API: (enable: boolean, api: string) =>
-    `API ${api} doesn\'t exist. Try \'clasp apis ${enable ? 'enable' : 'disable'} sheets\'.`,
+    `API ${api} doesn\'t exist. Try \'clsheets apis ${enable ? 'enable' : 'disable'} sheets\'.`,
   NO_CREDENTIALS: (local: boolean) => `Could not read API credentials. ` +
     `Are you logged in ${local ? 'locall' : 'globall'}y?`,
   NO_FUNCTION_NAME: 'N/A',
@@ -90,7 +90,7 @@ Forgot ${PROJECT_NAME} commands? Get help:\n  ${PROJECT_NAME} --help`,
   NO_LOCAL_CREDENTIALS: `Requires local crendetials:\n\n  ${PROJECT_NAME} login --creds <file.json>`,
   NO_MANIFEST: (filename: string) =>
     `Manifest: ${filename} invalid. \`create\` or \`clone\` a project first.`,
-  NO_NESTED_PROJECTS: '\nNested clasp projects are not supported.',
+  NO_NESTED_PROJECTS: '\nNested clsheets projects are not supported.',
   NO_VERSIONED_DEPLOYMENTS: `No versioned deployments found in project.`,
   NO_WEBAPP: (deploymentId: string) => `Deployment "${deploymentId}" is not deployed as WebApp.`,
   OFFLINE: 'Error: Looks like you are offline.',
@@ -201,8 +201,8 @@ Cloned ${fileNum} ${pluralize('files', fileNum)}.`,
     Click ${chalk.cyan('Create')}.
     Click ${chalk.cyan('Download JSON')} for the new client ID: ${chalk.yellow('name')} (right-hand side).
 
-2. Authenticate clasp with your credentials json file:
-    clasp login --creds <client_credentials.json>`,
+2. Authenticate clsheets with your credentials json file:
+    clsheets login --creds <client_credentials.json>`,
 };
 
 export const spinner = new Spinner();

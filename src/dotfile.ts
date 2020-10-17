@@ -1,13 +1,13 @@
 /**
  * Manages dotfiles. There are 2 types of dotfiles:
  *
- * Global clasp auth settings:
- * - File: ~/.clasp.json
- * - Default credentials for clasp projects.
+ * Global clsheets auth settings:
+ * - File: ~/.clsheets.json
+ * - Default credentials for clsheets projects.
  *
- * Local clasp auth settings:
- * - File: .clasp.json
- * - Requires `clasp login --creds creds.json`
+ * Local clsheets auth settings:
+ * - File: .clsheets.json
+ * - Requires `clsheets login --creds creds.json`
  *
  * This should be the only file that uses DOTFILE.
  */
@@ -39,13 +39,13 @@ const splitLines: (str: string, options?: { preserveNewLines?: boolean })
 
 // TEMP CIRCULAR DEPS, TODO REMOVE
 // import { PROJECT_NAME } from './utils';
-const PROJECT_NAME = 'clasp';
+const PROJECT_NAME = 'clsheets';
 
 // TODO: workaround the circular dependency with `files.ts`
 // @see https://nodejs.org/api/fs.html#fs_fs_readfilesync_path_options
 const FS_OPTIONS = { encoding: 'utf8' };
 
-// Project settings file (Saved in .clasp.json)
+// Project settings file (Saved in .clsheets.json)
 export interface ProjectSettings {
   scriptId: string;
   rootDir?: string;
@@ -65,7 +65,7 @@ export const DOT = {
     PATH: `.${PROJECT_NAME}ignore`,
   },
   /**
-   * This dotfile saves clasp project information, local to project directory.
+   * This dotfile saves clsheets project information, local to project directory.
    */
   PROJECT: {
     DIR: path.join('.', '/'), // Relative to where the command is run. See DOTFILE.PROJECT()
@@ -146,8 +146,8 @@ export const DOTFILE = {
 
 /**
  * OAuth client settings file.
- * Local credentials are saved in ./.clasprc.json
- * Global credentials are saved in ~/.clasprc.json
+ * Local credentials are saved in ./.clsheetsrc.json
+ * Global credentials are saved in ~/.clsheetsrc.json
  * @example
  * {
  *   "token": {

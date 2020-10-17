@@ -2,14 +2,14 @@ import { ProjectSettings } from '../dotfile';
 import { ERROR, getProjectSettings, logError, saveProject } from '../utils';
 
 /**
- * Gets or sets a setting in .clasp.json
+ * Gets or sets a setting in .clsheets.json
  * @param {keyof ProjectSettings} settingKey The key to set
  * @param {string?} settingValue Optional value to set the key to
  */
 export default async (settingKey?: keyof ProjectSettings, settingValue?: string) => {
   let currentSettings = await getProjectSettings();
 
-  // Display all settings if ran `clasp setting`.
+  // Display all settings if ran `clsheets setting`.
   if (!settingKey) {
     console.log(currentSettings);
     return;
@@ -55,7 +55,7 @@ export default async (settingKey?: keyof ProjectSettings, settingValue?: string)
       await saveProject(currentSettings, true);
       console.log(`Updated "${settingKey}": "${currentValue}" → "${settingValue}"`);
     } catch (e) {
-      logError(null, 'Unable to update .clasp.json');
+      logError(null, 'Unable to update .clsheets.json');
     }
   }
 };

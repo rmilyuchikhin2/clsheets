@@ -1,7 +1,7 @@
 {
-  "name": "@google/clasp",
-  "version": "2.3.0",
-  "description": "Develop Apps Script Projects locally",
+  "name": "clsheets",
+  "version": "0.1.0",
+  "description": "Store Google Sheets locally",
   "main": "./src/index.js",
   "scripts": {
     "build": "npm run build-local && npm i -g --loglevel=error",
@@ -16,22 +16,13 @@
     "node": ">=8.2.1"
   },
   "bin": {
-    "clasp": "./src/index.js"
+    "clsheets": "./src/index.js"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/google/clasp"
+    "url": "https://github.com/rmilyuchikhin2/clsheets"
   },
-  "keywords": [
-    "Apps",
-    "Script",
-    "SDK",
-    "API",
-    "script.google.com",
-    "extension",
-    "add-on"
-  ],
-  "author": "Grant Timmerman",
+  "author": "Roman Milyuchikhin",
   "license": "Apache-2.0",
   "dependencies": {
     "chalk": "^2.4.2",

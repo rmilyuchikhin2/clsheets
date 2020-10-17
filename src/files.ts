@@ -44,8 +44,8 @@ export function getFileType(type: string, fileExtension?: string): string {
 }
 
 /**
- * Returns true if the user has a clasp project.
- * @returns {boolean} If .clasp.json exists.
+ * Returns true if the user has a clsheets project.
+ * @returns {boolean} If .clsheets.json exists.
  */
 export function hasProject(): boolean {
   return fs.existsSync(DOT.PROJECT.PATH);
@@ -70,12 +70,12 @@ function getTranspileOptions(): ts.TranspileOptions {
 
 /**
  * Recursively finds all files that are part of the current project, and those that are ignored
- * by .claspignore and calls the passed callback function with the file lists.
+ * by .clsheetsignore and calls the passed callback function with the file lists.
  * @param {string} rootDir The project's root directory
  * @param {FilesCallBack} callback The callback will be called with the following paramters
  *   error: Error if there's an error, otherwise null
  *   result: string[][], List of two lists of strings, ie. [nonIgnoredFilePaths,ignoredFilePaths]
- *   files?: Array<AppsScriptFile|undefined> Array of AppsScriptFile objects used by clasp push
+ *   files?: Array<AppsScriptFile|undefined> Array of AppsScriptFile objects used by clsheets push
  * @todo Make this function actually return a Promise that can be awaited.
  */
 export async function getProjectFiles(rootDir: string = path.join('.', '/'), callback: FilesCallback) {
@@ -96,7 +96,7 @@ export async function getProjectFiles(rootDir: string = path.join('.', '/'), cal
     filePaths = filePaths.map((name) => name.replace(/\\/g, '/'));
     filePaths.sort(); // Sort files alphanumerically
 
-    // dispatch with patterns from .claspignore
+    // dispatch with patterns from .clsheetsignore
     const filesToPush: string[] = [];
     const filesToIgnore: string[] = [];
     filePaths.forEach(file => {

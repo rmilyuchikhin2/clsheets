@@ -21,7 +21,7 @@ const normalizeNewline = require('normalize-newline');
 /**
  * Uploads all files into the script.google.com filesystem.
  * TODO: Only push the specific files that changed (rather than all files).
- * @param cmd.watch {boolean} If true, runs `clasp push` when any local file changes. Exit with ^C.
+ * @param cmd.watch {boolean} If true, runs `clsheets push` when any local file changes. Exit with ^C.
  */
 export default async (cmd: { watch: boolean; force: boolean }) => {
   await checkIfOnline();

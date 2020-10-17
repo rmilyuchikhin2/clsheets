@@ -15,7 +15,7 @@ import { ClaspCredentials, ERROR, LOG, checkIfOnline, getOAuthSettings, logError
 
 // Auth is complicated. Consider yourself warned.
 // tslint:disable:max-line-length
-// GLOBAL: clasp login will store this (~/.clasprc.json):
+// GLOBAL: clsheets login will store this (~/.clsheetsrc.json):
 // {
 //   "access_token": "XXX",
 //   "refresh_token": "1/k4rt_hgxbeGdaRag2TSVgnXgUrWcXwerPpvlzGG1peHVfzI58EZH0P25c7ykiRYd",
@@ -23,7 +23,7 @@ import { ClaspCredentials, ERROR, LOG, checkIfOnline, getOAuthSettings, logError
 //   "token_type": "Bearer",
 //   "expiry_date": 1539130731398
 // }
-// LOCAL: clasp login will store this (./.clasprc.json):
+// LOCAL: clsheets login will store this (./.clsheetsrc.json):
 // {
 //   "token": {
 //     "access_token": "XXX",
@@ -108,7 +108,7 @@ export async function authorize(options: {
     let scope = (options.creds) ?
       // Set scopes to custom scopes
       options.scopes : [
-        // Default to clasp scopes
+        // Default to clsheets scopes
         'https://www.googleapis.com/auth/script.deployments', // Apps Script deployments
         'https://www.googleapis.com/auth/script.projects', // Apps Script management
         'https://www.googleapis.com/auth/script.webapp.deploy', // Apps Script Web Apps
@@ -124,7 +124,7 @@ export async function authorize(options: {
       ];
     if (options.creds && scope.length === 0) {
       scope = [
-        // Default to clasp scopes
+        // Default to clsheets scopes
         'https://www.googleapis.com/auth/script.deployments', // Apps Script deployments
         'https://www.googleapis.com/auth/script.projects', // Apps Script management
         'https://www.googleapis.com/auth/script.webapp.deploy', // Apps Script Web Apps
@@ -142,7 +142,7 @@ export async function authorize(options: {
       // logError(null, 'You need to specify scopes in the manifest.' +
       // 'View appsscript.json. Add a list of scopes in "oauthScopes"' +
       // 'Tip:' +
-      // '1. clasp open' +
+      // '1. clsheets open' +
       // '2. File > Project Properties > Scopes');
     }
     const oAuth2ClientAuthUrlOpts: GenerateAuthUrlOpts = {

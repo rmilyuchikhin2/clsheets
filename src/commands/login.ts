@@ -1,5 +1,5 @@
 /**
- * Clasp command method bodies.
+ * Clsheets command method bodies.
  */
 import { readJsonSync } from 'fs-extra';
 import { enableAppsScriptAPI } from '../apiutils';
@@ -76,7 +76,7 @@ export default async (options: { localhost?: boolean; creds?: string; status?: b
       await authorize({
         useLocalhost,
         scopes: [
-          // Use the default scopes needed for clasp.
+          // Use the default scopes needed for clsheets.
           'https://www.googleapis.com/auth/script.deployments', // Apps Script deployments
           'https://www.googleapis.com/auth/script.projects', // Apps Script management
           'https://www.googleapis.com/auth/script.webapp.deploy', // Apps Script Web Apps

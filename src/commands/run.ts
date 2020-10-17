@@ -8,12 +8,12 @@ import { URL } from '../urls';
 import { ERROR, checkIfOnline, getProjectSettings, getValidJSON, logError, spinner } from '../utils';
 
 /**
- * Executes an Apps Script function. Requires clasp login --creds.
+ * Executes an Apps Script function. Requires clsheets login --creds.
  * @param functionName {string} The function name within the Apps Script project.
  * @param cmd.nondev {boolean} If we want to run the last deployed version vs the latest code.
  * @param cmd.params {string} JSON string of parameters to be input to function.
  * @see https://developers.google.com/apps-script/api/how-tos/execute
- * @requires `clasp login --creds` to be run beforehand.
+ * @requires `clsheets login --creds` to be run beforehand.
  */
 export default async (functionName: string, cmd: { nondev: boolean; params: string }) => {
   await checkIfOnline();
@@ -125,7 +125,7 @@ https://www.googleapis.com/auth/presentations
             console.log(
               `Added ${numScopes} ` + `${pluralize('scope', numScopes)} to your appsscript.json' oauthScopes`,
             );
-            console.log('Please `clasp login --creds <file>` to log in with these new scopes.');
+            console.log('Please `clsheets login --creds <file>` to log in with these new scopes.');
           });
           // We probably don't need to show the unauth error
           // since we always prompt the user to fix this now.

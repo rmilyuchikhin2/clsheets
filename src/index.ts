@@ -18,7 +18,7 @@
  */
 
 /**
- * clasp – The Apps Script CLI
+ * clsheets – The Apps Script CLI
  */
 
 import { PROJECT_NAME, handleError } from './utils';
@@ -60,7 +60,7 @@ commander
  * @name login
  * @param {string?} [--no-localhost] Do not run a local server, manually enter code instead.
  * @param {string?} [--creds] Relative path to credentials (from GCP).
- * @example login (uses default clasp credentials)
+ * @example login (uses default clsheets credentials)
  * @example login --creds credentials.json (uses your credentials file).
  * @see test
  */
@@ -107,7 +107,7 @@ commander
   )
   .option('--title <title>', 'The project title.')
   .option('--parentId <id>', 'A project parent Id.')
-  .option('--rootDir <rootDir>', 'Local root directory in which clasp will store your project files.')
+  .option('--rootDir <rootDir>', 'Local root directory in which clsheets will store your project files.')
   .action(handleError(create));
 
 /**
@@ -119,7 +119,7 @@ commander
 commander
   .command('clone [scriptId] [versionNumber]')
   .description('Clone a project')
-  .option('--rootDir <rootDir>', 'Local root directory in which clasp will store your project files.')
+  .option('--rootDir <rootDir>', 'Local root directory in which clsheets will store your project files.')
   .action(handleError(clone));
 
 /**
@@ -163,12 +163,12 @@ commander
  */
 commander
   .command('status')
-  .description('Lists files that will be pushed by clasp')
+  .description('Lists files that will be pushed by clsheets')
   .option('--json', 'Show status in JSON form')
   .action(handleError(status));
 
 /**
- * Opens the `clasp` project on script.google.com. Provide a `scriptId` to open a different script.
+ * Opens the `clsheets` project on script.google.com. Provide a `scriptId` to open a different script.
  * @name open
  * @param {string?} [scriptId] The optional script project to open.
  * @example open
@@ -284,7 +284,7 @@ commander
  * @param {boolean?} nondev Run script function in non-devMode.
  * @example run 'sendEmail'
  * @see https://developers.google.com/apps-script/api/reference/rest/v1/scripts/run
- * @requires `clasp login --creds` to be run beforehand.
+ * @requires `clsheets login --creds` to be run beforehand.
  */
 commander
   .command('run [functionName]')
@@ -322,11 +322,11 @@ commander
   .action(handleError(help));
 
 /**
- * Update .clasp.json settings file.
+ * Update .clsheets.json settings file.
  * If `newValue` is omitted, it returns the current setting value
- * If `settingKey` is omitted, it returns all keys in .clasp.json
+ * If `settingKey` is omitted, it returns all keys in .clsheets.json
  * @name setting
- * @param {string?} settingKey They key in .clasp.json you want to change
+ * @param {string?} settingKey They key in .clsheets.json you want to change
  * @param {string?} newValue The new value for the setting
  * @example setting
  * @example setting scriptId
@@ -335,7 +335,7 @@ commander
 commander
   .command('setting [settingKey] [newValue]')
   .alias('settings')
-  .description('Update <settingKey> in .clasp.json')
+  .description('Update <settingKey> in .clsheets.json')
   .action(handleError(setting));
 
 /**
@@ -348,7 +348,7 @@ commander
   .action(handleError(defaultCmd));
 
 /**
- * Displays clasp version
+ * Displays clsheets version
  */
 commander.option('-v, --version').on('option:version', () => {
   console.log(require('../package.json').version);
