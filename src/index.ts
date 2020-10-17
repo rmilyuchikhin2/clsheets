@@ -352,13 +352,12 @@ commander
   .description('Any other command is not supported')
   .action(handleError(defaultCmd));
 
-// TODO: Cleanup
-// /**
-//  * Displays clsheets version
-//  */
-// commander.option('-v, --version').on('option:version', () => {
-//   console.log(require('../package.json').version);
-// });
+/**
+ * Displays clsheets version
+ */
+commander.option('-v, --version').on('option:version', () => {
+  console.log(require('../package.json').version);
+});
 
 // defaults to help if commands are not provided
 if (!process.argv.slice(2).length) {
