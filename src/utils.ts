@@ -134,7 +134,7 @@ export const LOG = {
 //   NOT_LOGGED_IN: 'You are not logged in.',
 //   LOGGED_IN_UNKNOWN: 'You are logged in as an unknown user.',
 //   LOGGED_IN_AS: (email: string) => `You are logged in as ${email}.`,
-//   AUTH_CODE: 'Enter the code from that page here: ',
+  AUTH_CODE: 'Enter the code from that page here: ',
   // TODO: Make AUTH_PAGE_SUCCESSFUL show an HTML page with something useful!
   AUTH_PAGE_SUCCESSFUL: `Logged in! You may close this page. `, // HTML Redirect Page
   AUTH_SUCCESSFUL: `Authorization successful.`,

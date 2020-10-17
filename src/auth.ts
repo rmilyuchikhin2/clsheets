@@ -7,8 +7,7 @@ import { AddressInfo } from 'net';
 // TODO: Cleanup
 // import { google, script_v1 } from 'googleapis';
 import open from 'open';
-// TODO: Cleanup
-// import readline from 'readline';
+import readline from 'readline';
 import url from 'url';
 import { ClaspToken, DOTFILE, Dotfile } from './dotfile';
 // TODO: Cleanup
@@ -16,42 +15,42 @@ import { ClaspToken, DOTFILE, Dotfile } from './dotfile';
 // import { readManifest } from './manifest';
 import { ClaspCredentials, ERROR, LOG, logError } from './utils';
 
-// TODO: Cleanup
-// // Auth is complicated. Consider yourself warned.
-// // tslint:disable:max-line-length
-// // GLOBAL: clsheets login will store this (~/.clsheetsrc.json):
-// // {
-// //   "access_token": "XXX",
-// //   "refresh_token": "1/k4rt_hgxbeGdaRag2TSVgnXgUrWcXwerPpvlzGG1peHVfzI58EZH0P25c7ykiRYd",
-// //   "scope": "https://www.googleapis.com/auth/script.projects https://www.googleapis.com/auth/script ...",
-// //   "token_type": "Bearer",
-// //   "expiry_date": 1539130731398
-// // }
-// // LOCAL: clsheets login will store this (./.clsheetsrc.json):
-// // {
-// //   "token": {
-// //     "access_token": "XXX",
-// //     "refresh_token": "1/k4rw_hgxbeGdaRag2TSVgnXgUrWcXwerPpvlzGG1peHVfzI58EZH0P25c7ykiRYd",
-// //     "scope": "https://www.googleapis.com/auth/script.projects https://www.googleapis.com/auth/script ...",
-// //     "token_type": "Bearer",
-// //     "expiry_date": 1539130731398
-// //   },
-// //   // Settings
-// //   "oauth2ClientSettings": {
-// //     "clientId": "807925367021-infvb16rd7lasqi22q2npeahkeodfrq5.apps.googleusercontent.com",
-// //     "clientSecret": "9dbdeOCRHUyriewCoDrLHtPg",
-// //     "redirectUri": "http://localhost"
-// //   },
-// //   "isLocalCreds": true
-// // }
-// // API settings
-// // @see https://developers.google.com/oauthplayground/
-// const REDIRECT_URI_OOB = 'urn:ietf:wg:oauth:2.0:oob';
+// Auth is complicated. Consider yourself warned.
+// tslint:disable:max-line-length
+// GLOBAL: clsheets login will store this (~/.clsheetsrc.json):
+// {
+//   "access_token": "XXX",
+//   "refresh_token": "1/k4rt_hgxbeGdaRag2TSVgnXgUrWcXwerPpvlzGG1peHVfzI58EZH0P25c7ykiRYd",
+//   "scope": "https://www.googleapis.com/auth/script.projects https://www.googleapis.com/auth/script ...",
+//   "token_type": "Bearer",
+//   "expiry_date": 1539130731398
+// }
+// LOCAL: clsheets login will store this (./.clsheetsrc.json):
+// {
+//   "token": {
+//     "access_token": "XXX",
+//     "refresh_token": "1/k4rw_hgxbeGdaRag2TSVgnXgUrWcXwerPpvlzGG1peHVfzI58EZH0P25c7ykiRYd",
+//     "scope": "https://www.googleapis.com/auth/script.projects https://www.googleapis.com/auth/script ...",
+//     "token_type": "Bearer",
+//     "expiry_date": 1539130731398
+//   },
+//   // Settings
+//   "oauth2ClientSettings": {
+//     "clientId": "807925367021-infvb16rd7lasqi22q2npeahkeodfrq5.apps.googleusercontent.com",
+//     "clientSecret": "9dbdeOCRHUyriewCoDrLHtPg",
+//     "redirectUri": "http://localhost"
+//   },
+//   "isLocalCreds": true
+// }
+// API settings
+// @see https://developers.google.com/oauthplayground/
+const REDIRECT_URI_OOB = 'urn:ietf:wg:oauth:2.0:oob';
 const globalOauth2ClientSettings: OAuth2ClientOptions = {
   clientId: '287187391529-g9anbpgql2doi2tmn29o12hn06f7ckjv.apps.googleusercontent.com',
   clientSecret: 'qzvD2FXiyNUlcfa-KoS3IP42',
   redirectUri: 'http://localhost',
 };
+// TODO: Cleanup
 // const globalOAuth2Client = new OAuth2Client(globalOauth2ClientSettings);
 // let localOAuth2Client: OAuth2Client; // Must be set up after authorize.
 //
@@ -152,7 +151,7 @@ export async function authorize(options: {
     // Grab a token from the credentials.
     const token = await (options.useLocalhost
       ? authorizeWithLocalhost(oAuth2ClientOptions, oAuth2ClientAuthUrlOpts)
-      : (() => { throw new Error('Not implemented: 326d001b-e93e-4559-af19-d7aa1dd7dde7'); })() /*authorizeWithoutLocalhost(oAuth2ClientOptions, oAuth2ClientAuthUrlOpts) TODO: Cleanup*/);
+      : authorizeWithoutLocalhost(oAuth2ClientOptions, oAuth2ClientAuthUrlOpts));
     console.log(LOG.AUTH_SUCCESSFUL + '\n');
 
     // Save the token and own creds together.
@@ -252,39 +251,40 @@ async function authorizeWithLocalhost(
   return (await client.getToken(authCode)).tokens;
 }
 
-// /**
-//  * Requests authorization to manage Apps Script projects. Requires the user to
-//  * manually copy/paste the authorization code. No HTTP server is used.
-//  * @param {OAuth2ClientOptions} oAuth2ClientOptions The required client options for auth.
-//  * @param {GenerateAuthUrlOpts} oAuth2ClientAuthUrlOpts Auth URL options
-//  */
-// async function authorizeWithoutLocalhost(
-//   oAuth2ClientOptions: OAuth2ClientOptions,
-//   oAuth2ClientAuthUrlOpts: GenerateAuthUrlOpts): Promise<Credentials> {
-//   const client = new OAuth2Client({
-//     ...oAuth2ClientOptions,
-//     redirectUri: REDIRECT_URI_OOB,
-//   });
-//   const authUrl = client.generateAuthUrl(oAuth2ClientAuthUrlOpts);
-//   console.log(LOG.AUTHORIZE(authUrl));
-//   // TODO Add spinner
-//   const authCode = await new Promise<string>((res, rej) => {
-//     const rl = readline.createInterface({
-//       input: process.stdin,
-//       output: process.stdout,
-//     });
-//     rl.question(LOG.AUTH_CODE, (code: string) => {
-//       if (code && code.length) {
-//         res(code);
-//       } else {
-//         rej('No authorization code entered.');
-//       }
-//       rl.close();
-//     });
-//   });
-//   return (await client.getToken(authCode)).tokens;
-// }
-//
+/**
+ * Requests authorization to manage Google Sheets. Requires the user to
+ * manually copy/paste the authorization code. No HTTP server is used.
+ * @param {OAuth2ClientOptions} oAuth2ClientOptions The required client options for auth.
+ * @param {GenerateAuthUrlOpts} oAuth2ClientAuthUrlOpts Auth URL options
+ */
+async function authorizeWithoutLocalhost(
+  oAuth2ClientOptions: OAuth2ClientOptions,
+  oAuth2ClientAuthUrlOpts: GenerateAuthUrlOpts): Promise<Credentials> {
+  const client = new OAuth2Client({
+    ...oAuth2ClientOptions,
+    redirectUri: REDIRECT_URI_OOB,
+  });
+  const authUrl = client.generateAuthUrl(oAuth2ClientAuthUrlOpts);
+  console.log(LOG.AUTHORIZE(authUrl));
+  // TODO Add spinner
+  const authCode = await new Promise<string>((res, rej) => {
+    const rl = readline.createInterface({
+      input: process.stdin,
+      output: process.stdout,
+    });
+    rl.question(LOG.AUTH_CODE, (code: string) => {
+      if (code && code.length) {
+        res(code);
+      } else {
+        rej('No authorization code entered.');
+      }
+      rl.close();
+    });
+  });
+  return (await client.getToken(authCode)).tokens;
+}
+
+// TODO: Cleanup
 // /**
 //  * Set OAuth client credentails from rc.
 //  * Can be global or local.
