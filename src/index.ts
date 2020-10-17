@@ -21,7 +21,7 @@
  * clsheets – The Google Sheets CLI
  */
 
-import { PROJECT_NAME/*, handleError TODO: Cleanup*/ } from './utils';
+import { PROJECT_NAME, handleError } from './utils';
 
 // TODO: Cleanup
 // import apis from './commands/apis';
@@ -29,7 +29,8 @@ import { PROJECT_NAME/*, handleError TODO: Cleanup*/ } from './utils';
 import commander from 'commander';
 // TODO: Cleanup
 // import create from './commands/create';
-// import defaultCmd from './commands/defaultCmd';
+import defaultCmd from './commands/defaultCmd';
+// TODO: Cleanup
 // import deploy from './commands/deploy';
 // import deployments from './commands/deployments';
 // import help from './commands/help';
@@ -341,16 +342,17 @@ commander
 //   .alias('settings')
 //   .description('Update <settingKey> in .clsheets.json')
 //   .action(handleError(setting));
-//
-// /**
-//  * All other commands are given a help message.
-//  * @example random
-//  */
-// commander
-//   .command('*', { isDefault: true })
-//   .description('Any other command is not supported')
-//   .action(handleError(defaultCmd));
-//
+
+/**
+ * All other commands are given a help message.
+ * @example random
+ */
+commander
+  .command('*', { isDefault: true })
+  .description('Any other command is not supported')
+  .action(handleError(defaultCmd));
+
+// TODO: Cleanup
 // /**
 //  * Displays clsheets version
 //  */

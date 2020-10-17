@@ -1,7 +1,8 @@
 // TODO: Cleanup
 // import path from 'path';
 // import chalk from 'chalk';
-// import { Spinner } from 'cli-spinner';
+import { Spinner } from 'cli-spinner';
+// TODO: Cleanup
 // import fs from 'fs-extra';
 // import { script_v1 } from 'googleapis';
 // import pluralize from 'pluralize';
@@ -57,16 +58,18 @@ export const PROJECT_NAME = 'clsheets';
 //     .read<ClaspToken>()
 //     .catch((err: Error) => logError(err, ERROR.NO_CREDENTIALS(local)));
 // }
-//
-// // Error messages (some errors take required params)
-// export const ERROR = {
+
+// Error messages (some errors take required params)
+export const ERROR = {
+// TODO: Cleanup
 //   ACCESS_TOKEN: `Error retrieving access token: `,
 //   BAD_CREDENTIALS_FILE: 'Incorrect credentials file format.',
 //   BAD_REQUEST: (message: string) => `Error: ${message}
 // Your credentials may be invalid. Try logging in again.`,
 //   BAD_MANIFEST: `Error: Your ${PROJECT_MANIFEST_FILENAME} contains invalid JSON.`,
-//   COMMAND_DNE: (command: string) => `🤔  Unknown command "${PROJECT_NAME} ${command}"\n
-// Forgot ${PROJECT_NAME} commands? Get help:\n  ${PROJECT_NAME} --help`,
+  COMMAND_DNE: (command: string) => `🤔  Unknown command "${PROJECT_NAME} ${command}"\n
+Forgot ${PROJECT_NAME} commands? Get help:\n  ${PROJECT_NAME} --help`,
+// TODO: Cleanup
 //   CONFLICTING_FILE_EXTENSION: (name: string) => `File names: ${name}.js/${name}.gs conflict. Only keep one.`,
 //   CREATE_WITH_PARENT: 'Did you provide the correct parentId?',
 //   CREATE: 'Error creating script.',
@@ -119,8 +122,9 @@ export const PROJECT_NAME = 'clsheets';
 //   UNKNOWN_KEY: (key: string) => `Unknown key "${key}"`,
 //   PROJECT_ID_INCORRECT: (projectId: string) => `The projectId "${projectId}" looks incorrect.
 // Did you provide the correct projectID?`,
-// };
-//
+};
+
+// TODO: Cleanup
 // // Log messages (some logs take required params)
 // export const LOG = {
 //   ASK_PROJECT_ID: `What is your GCP projectId?`,
@@ -206,49 +210,54 @@ export const PROJECT_NAME = 'clsheets';
 // 2. Authenticate clsheets with your credentials json file:
 //     clsheets login --creds <client_credentials.json>`,
 // };
-//
-// export const spinner = new Spinner();
-//
-// /**
-//  * Logs errors to the user such as unauthenticated or permission denied and exits Node.
-//  *
-//  * > This function **`never`** returns
-//  *
-//  * @param  {object} err         The object from the request's error
-//  * @param  {string} description The description of the error
-//  * @param  {number} code        (*optional*) The process exit code. default value is `1`
-//  */
-// // tslint:disable-next-line:no-any
-// export const logError = (err: any, description = '', code = 1): never => {
-//   spinner.stop(true);
-//   // Errors are weird. The API returns interesting error structures.
-//   // TODO(timmerman) This will need to be standardized. Waiting for the API to
-//   // change error model. Don't review this method now.
-//   if (err && typeof err.error === 'string') {
-//     description = JSON.parse(err.error).error;
-//   } else if (
-//     (err && err.statusCode === 401) ||
-//     (err && err.error && err.error.error && err.error.error.code === 401)
-//   ) {
-//     // TODO check if local creds exist:
-//     //  localOathSettingsExist() ? ERROR.UNAUTHENTICATED : ERROR.UNAUTHENTICATED_LOCAL
-//     description = ERROR.UNAUTHENTICATED;
-//   } else if (err && ((err.error && err.error.code === 403) || err.code === 403)) {
-//     // TODO check if local creds exist:
-//     //  localOathSettingsExist() ? ERROR.PERMISSION_DENIED : ERROR.PERMISSION_DENIED_LOCAL
-//     description = ERROR.PERMISSION_DENIED;
-//   } else if (err && err.code === 429) {
-//     description = ERROR.RATE_LIMIT;
-//   } else {
-//     if (err && err.error) {
-//       console.error(`~~ API ERROR (${err.statusCode || err.error.code})`);
-//       console.error(err.error);
-//     }
-//   }
-//   if (description) console.error(description);
-//   return process.exit(code);
-// };
-//
+
+/*export TODO: Cleanup*/ const spinner = new Spinner();
+
+/**
+ * Logs errors to the user such as unauthenticated or permission denied and exits Node.
+ *
+ * > This function **`never`** returns
+ *
+ * @param  {object} err         The object from the request's error
+ * @param  {string} description The description of the error
+ * @param  {number} code        (*optional*) The process exit code. default value is `1`
+ */
+// tslint:disable-next-line:no-any
+export const logError = (err: any, description = '', code = 1): never => {
+  spinner.stop(true);
+  // Errors are weird. The API returns interesting error structures.
+  // TODO(timmerman) This will need to be standardized. Waiting for the API to
+  // change error model. Don't review this method now.
+  if (err && typeof err.error === 'string') {
+    throw 'Not implemented: 8ef7adab-4473-4887-b645-d9a30636786c'; // TODO: Cleanup
+    // description = JSON.parse(err.error).error;
+  } else if (
+    (err && err.statusCode === 401) ||
+    (err && err.error && err.error.error && err.error.error.code === 401)
+  ) {
+    throw 'Not implemented: c7e4858a-55c1-4fb6-bbb1-759f26b505d1'; // TODO: Cleanup
+    // // TODO check if local creds exist:
+    // //  localOathSettingsExist() ? ERROR.UNAUTHENTICATED : ERROR.UNAUTHENTICATED_LOCAL
+    // description = ERROR.UNAUTHENTICATED;
+  } else if (err && ((err.error && err.error.code === 403) || err.code === 403)) {
+    throw 'Not implemented: 43ba0834-fe3e-4a06-99d7-7f5093e4032b'; // TODO: Cleanup
+    // // TODO check if local creds exist:
+    // //  localOathSettingsExist() ? ERROR.PERMISSION_DENIED : ERROR.PERMISSION_DENIED_LOCAL
+    // description = ERROR.PERMISSION_DENIED;
+  } else if (err && err.code === 429) {
+    throw 'Not implemented: e3ffccd1-5907-42f7-b4fd-0f09433642c7'; // TODO: Cleanup
+    // description = ERROR.RATE_LIMIT;
+  } else {
+    if (err && err.error) {
+      throw 'Not implemented: 4c56df0e-c2db-4d4c-8213-427ef6382add'; // TODO: Cleanup
+      // console.error(`~~ API ERROR (${err.statusCode || err.error.code})`);
+      // console.error(err.error);
+    }
+  }
+  if (description) console.error(description);
+  return process.exit(code);
+};
+
 // /**
 //  * Gets the web application URL from a deployment.
 //  *
@@ -401,23 +410,23 @@ export const PROJECT_NAME = 'clsheets';
 //   const fileType = getFileTypeName(type);
 //   return fileType ? `${fileType}s Add-on` : type;
 // }
-//
-// /**
-//  * Handles error of each command.
-//  */
-// // tslint:disable-next-line:no-any
-// export function handleError(command: (...args: any[]) => Promise<unknown>) {
-//   // tslint:disable-next-line:no-any
-//   return async (...args: any[]) => {
-//     try {
-//       await command(...args);
-//     } catch (e) {
-//       spinner.stop(true);
-//       logError(null, e.message);
-//     }
-//   };
-// }
-//
+
+/**
+ * Handles error of each command.
+ */
+// tslint:disable-next-line:no-any
+export function handleError(command: (...args: any[]) => Promise<unknown>) {
+  // tslint:disable-next-line:no-any
+  return async (...args: any[]) => {
+    try {
+      await command(...args);
+    } catch (e) {
+      spinner.stop(true);
+      logError(null, e.message);
+    }
+  };
+}
+
 // /**
 //  * Validate the project id.
 //  * @param {string} projectId The project id.
