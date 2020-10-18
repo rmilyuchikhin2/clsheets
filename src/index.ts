@@ -25,7 +25,7 @@ import { PROJECT_NAME, handleError } from './utils';
 
 // TODO: Cleanup
 // import apis from './commands/apis';
-// import clone from './commands/clone';
+import clone from './commands/clone';
 import commander from 'commander';
 import create from './commands/create';
 import defaultCmd from './commands/defaultCmd';
@@ -107,19 +107,18 @@ commander
   .option('--rootDir <rootDir>', 'Local root directory in which clsheets will store your project files.')
   .action(handleError(create));
 
+/**
+ * Fetches a Google Sheets project and saves the file id locally.
+ * @param {string?} [fileId] The file ID to clone.
+ * @param {string?} [--rootDir] Local root directory that store your project files.
+ */
+commander
+  .command('clone [fileId]')
+  .description('Clone a project')
+  .option('--rootDir <rootDir>', 'Local root directory in which clsheets will store your project files.')
+  .action(handleError(clone));
+
 // TODO: Cleanup
-// /**
-//  * Fetches a project and saves the script id locally.
-//  * @param {string?} [scriptId] The script ID to clone.
-//  * @param {string?} [versionNumber] The version of the script to clone.
-//  * @param {string?} [--rootDir] Local root directory that store your project files.
-//  */
-// commander
-//   .command('clone [scriptId] [versionNumber]')
-//   .description('Clone a project')
-//   .option('--rootDir <rootDir>', 'Local root directory in which clsheets will store your project files.')
-//   .action(handleError(clone));
-//
 // /**
 //  * Fetches a project from either a provided or saved script id.
 //  * Updates local files with Apps Script project.

@@ -1,8 +1,8 @@
+/**
+ * Google API Types
+ */
+
 // TODO: Cleanup
-// /**
-//  * Google API Types
-//  */
-//
 // /**
 //  * Different types of starter script templates.
 //  * Technically, a script can be multiple types (e.g. Slides add-on/API),
@@ -183,5 +183,5 @@
 //     version: 'v3',
 //   },
 // ];
-//
-// export const SCRIPT_ID_LENGTH = 57;
+
+export const FILE_ID_LENGTH = 44;

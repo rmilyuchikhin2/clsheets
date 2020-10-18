@@ -1,9 +1,11 @@
 // TODO: Cleanup
 // import { script_v1 } from 'googleapis';
-// import { prompt, registerPrompt } from 'inquirer';
+import { prompt/*, registerPrompt TODO: Cleanup*/ } from 'inquirer';
+// TODO: Cleanup
 // import { SCRIPT_TYPES } from './apis';
-// import { LOG } from './utils';
-//
+import { LOG } from './utils';
+
+// TODO: Cleanup
 // registerPrompt('autocomplete', require('inquirer-autocomplete-prompt'));
 //
 // export type functionNameSource =
@@ -94,27 +96,30 @@
 //   name: 'projectId',
 //   type: 'input',
 // }]);
-//
-// export interface ScriptIdPrompt {
-//   name: string;
-//   value: string;
-// }
-//
-// /**
-//  * Inquirer prompt for script Id.
-//  * @param {ScriptIdPrompt[]} fileIds An array of `ScriptIdPrompt` objects.
-//  * @returns {Promise<{scriptId: string;}>} A promise for an object with the `scriptId` property.
-//  */
-// export const scriptIdPrompt = (fileIds: ScriptIdPrompt[]) => prompt<{ scriptId: string }>([
-//   {
-//     choices: fileIds,
-//     message: LOG.CLONE_SCRIPT_QUESTION,
-//     name: 'scriptId',
-//     pageSize: 30,
-//     type: 'list',
-//   },
-// ]);
-//
+
+export interface FileIdPrompt {
+    // TODO: Cleanup
+    // name: string;
+    // value: string;
+}
+
+// noinspection JSValidateJSDoc
+/**
+ * Inquirer prompt for file Id.
+ * @param {FileIdPrompt[]} fileIds An array of `FileIdPrompt` objects.
+ * @returns {Promise<{fileId: string;}>} A promise for an object with the `fileId` property.
+ */
+export const fileIdPrompt = (fileIds: FileIdPrompt[]) => prompt<{ fileId: string }>([
+  {
+    choices: fileIds,
+    message: LOG.CLONE_FILE_QUESTION,
+    name: 'fileId',
+    pageSize: 30,
+    type: 'list',
+  },
+]);
+
+// TODO: Cleanup
 // /**
 //  * Inquirer prompt for script type.
 //  * @returns {Promise<{ type: string }>} A promise for an object with the `type` property.

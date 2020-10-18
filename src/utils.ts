@@ -142,9 +142,9 @@ export const LOG = {
   AUTH_SUCCESSFUL: `Authorization successful.`,
   AUTHORIZE: (authUrl: string) => `🔑 Authorize ${PROJECT_NAME} by visiting this url:\n${authUrl}\n`,
   CLONE_SUCCESS: (sheetNum: number) => `Cloned ${sheetNum} ${pluralize('sheets', sheetNum)}.`,
+  CLONING: 'Cloning files...',
+  CLONE_FILE_QUESTION: 'Clone which file?',
 // TODO: Cleanup
-//   CLONING: 'Cloning files...',
-//   CLONE_SCRIPT_QUESTION: 'Clone which script?',
 //   CREATE_SCRIPT_QUESTION: 'Create which script?',
   CREATE_DRIVE_FILE_FINISH: (fileid: string) =>
     `Created new Google Sheets file: ${URL.DRIVE(fileid)}`,
@@ -158,8 +158,11 @@ export const LOG = {
 //   DEPLOYMENT_DNE: 'No deployed versions of script.',
 //   DEPLOYMENT_LIST: (scriptId: string) => `Listing deployments...`,
 //   DEPLOYMENT_START: (scriptId: string) => `Deploying project...`,
+  FILE_LINK: (fileId: string) => `https://docs.google.com/spreadsheets/d/${fileId}/edit`,
+// TODO: Cleanup
 //   FILES_TO_PUSH: 'Files to push were:',
-//   FINDING_SCRIPTS_DNE: 'No script files found.',
+  FINDING_FILES_DNE: 'No files found.',
+// TODO: Cleanup
 //   FINDING_SCRIPTS: 'Finding your scripts...',
 //   GRAB_LOGS: 'Grabbing logs...',
 //   GET_PROJECT_ID_INSTRUCTIONS: `Go to *Resource > Cloud Platform Project...* and copy your projectId
@@ -187,7 +190,6 @@ export const LOG = {
     `*Be sure to never commit this file!* It's basically a password.`
     : `Default credentials saved to: ${DOT.RC.PATH} (${DOT.RC.ABSOLUTE_PATH}).`,
 // TODO: Cleanup
-//   SCRIPT_LINK: (scriptId: string) => `https://script.google.com/d/${scriptId}/edit`,
 //   // TODO: `SCRIPT_RUN` is never used
 //   SCRIPT_RUN: (functionName: string) => `Executing: ${functionName}`,
 //   STACKDRIVER_SETUP: 'Setting up StackDriver Logging.',

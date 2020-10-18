@@ -1,29 +1,28 @@
-// TODO: Cleanup
-// import { SCRIPT_ID_LENGTH } from './apis';
-//
-// /**
-//  * Extracts scriptId from URL if given in URL form.
-//  * @param scriptId {string} either a scriptId or URL containing the scriptId
-//  * @example
-//  * extractScriptId(
-//  * 'https://script.google.com/a/DOMAIN/d/1Ng7bNZ1K95wNi2H7IUwZzM68FL6ffxQhyc_ByV42zpS6qAFX8pFsWu2I/edit'
-//  * )
-//  * returns '1Ng7bNZ1K95wNi2H7IUwZzM68FL6ffxQhyc_ByV42zpS6qAFX8pFsWu2I'
-//  * @example
-//  * extractScriptId('1Ng7bNZ1K95wNi2H7IUwZzM68FL6ffxQhyc_ByV42zpS6qAFX8pFsWu2I')
-//  * returns '1Ng7bNZ1K95wNi2H7IUwZzM68FL6ffxQhyc_ByV42zpS6qAFX8pFsWu2I'
-//  */
-// export const extractScriptId = (scriptId: string) => {
-//   if (scriptId.length !== SCRIPT_ID_LENGTH) {
-//     const ids = scriptId.split('/').filter(s => {
-//       return s.length === SCRIPT_ID_LENGTH;
-//     });
-//     if (ids.length) {
-//       scriptId = ids[0];
-//     }
-//   }
-//   return scriptId;
-// };
+import { FILE_ID_LENGTH } from './apis';
+
+/**
+ * Extracts fileId from URL if given in URL form.
+ * @param fileId {string} either a scriptId or URL containing the fileId
+ * @example
+ * extractFileId(
+ * 'https://docs.google.com/spreadsheets/d/1Ng7bNZ1K95wNi2H7IUwZzM68FL6ffxQhyc_ByV42zpS6qAFX8pFsWu2I/edit#gid=0'
+ * )
+ * returns '1Ng7bNZ1K95wNi2H7IUwZzM68FL6ffxQhyc_ByV42zpS6qAFX8pFsWu2I'
+ * @example
+ * extractScriptId('1Ng7bNZ1K95wNi2H7IUwZzM68FL6ffxQhyc_ByV42zpS6qAFX8pFsWu2I')
+ * returns '1Ng7bNZ1K95wNi2H7IUwZzM68FL6ffxQhyc_ByV42zpS6qAFX8pFsWu2I'
+ */
+export const extractFileId = (fileId: string) => {
+    if (fileId.length !== FILE_ID_LENGTH) {
+        const ids = fileId.split('/').filter(s => {
+          return s.length === FILE_ID_LENGTH;
+        });
+        if (ids.length) {
+            fileId = ids[0];
+        }
+    }
+    return fileId;
+};
 
 // Helpers to get Apps Script project URLs
 export const URL = {
