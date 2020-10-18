@@ -51,9 +51,9 @@ const PROJECT_NAME = 'clsheets';
 
 // Project settings file (Saved in .clsheets.json)
 export interface ProjectSettings {
+    fileId: string;
+    rootDir?: string;
     // TODO: Cleanup
-    // scriptId: string;
-    // rootDir?: string;
     // projectId?: string;
     // fileExtension?: string;
     // filePushOrder?: string[];

@@ -120,8 +120,9 @@ Did you provide the correct scriptId?`,
 //   RUN_NODATA: 'Script execution API returned no data.',
 //   READ_ONLY_DELETE: 'Unable to delete read-only deployment.',
 //   SCRIPT_ID_DNE: `No scriptId found in your ${DOT.PROJECT.PATH} file.`,
-//   SETTINGS_DNE: `
-// No valid ${DOT.PROJECT.PATH} project file. You may need to \`create\` or \`clone\` a project first.`,
+  SETTINGS_DNE: `
+No valid ${DOT.PROJECT.PATH} project file. You may need to \`create\` or \`clone\` a project first.`,
+// TODO: Cleanup
 //   UNAUTHENTICATED_LOCAL: `Error: Local client credentials unauthenticated. Check scopes/authorization.`,
 //   UNAUTHENTICATED: 'Error: Unauthenticated request: Please try again.',
 //   UNKNOWN_KEY: (key: string) => `Unknown key "${key}"`,
@@ -177,7 +178,8 @@ export const LOG = {
 //   OPEN_LINK: (link: string) => `Open this link: ${link}`,
 //   OPEN_PROJECT: (scriptId: string) => `Opening script: ${URL.SCRIPT(scriptId)}`,
 //   OPEN_WEBAPP: (deploymentId?: string) => `Opening web application: ${deploymentId}`,
-//   PULLING: 'Pulling files...',
+  PULLING: 'Pulling project...',
+// TODO: Cleanup
 //   PUSH_FAILURE: 'Push failed. Errors:',
 //   PUSH_NO_FILES: 'No files to push.',
 //   PUSH_SUCCESS: (numFiles: number) => `Pushed ${numFiles} ${pluralize('files', numFiles)}.`,
@@ -258,6 +260,8 @@ export const logError = (err: any, description = '', code = 1): never => {
       // console.error(`~~ API ERROR (${err.statusCode || err.error.code})`);
       // console.error(err.error);
     }
+    else if (err && err.message)
+      description = err.message;
   }
   if (description) console.error(description);
   return process.exit(code);
@@ -286,41 +290,42 @@ export function getDefaultProjectName(): string {
   return ucfirst(path.basename(process.cwd()));
 }
 
-// /**
-//  * Gets the project settings from the project dotfile. Logs errors.
-//  * ! Should be used instead of `DOTFILE.PROJECT().read()`
-//  * @param  {boolean} failSilently Don't err when dot file DNE.
-//  * @return {Promise<ProjectSettings>} A promise to get the project dotfile as object.
-//  */
-// export async function getProjectSettings(failSilently?: boolean): Promise<ProjectSettings> {
-//   return new Promise<ProjectSettings>((resolve, reject) => {
-//     const fail = (silent?: boolean) => silent
-//       ? resolve()
-//       : logError(null, ERROR.SETTINGS_DNE);
-//     const dotfile = DOTFILE.PROJECT();
-//     if (dotfile) {
-//       // Found a dotfile, but does it have the settings, or is it corrupted?
-//       dotfile
-//         .read<ProjectSettings>()
-//         .then((settings) => {
-//           // Settings must have the script ID. Otherwise we err.
-//           if (settings.scriptId) {
-//             resolve(settings);
-//           } else {
-//             // TODO: Better error message
-//             fail(); // Script ID DNE
-//           }
-//         })
-//         .catch((err: object) => {
-//           fail(failSilently); // Failed to read dotfile
-//         });
-//     } else {
-//       fail(); // Never found a dotfile
-//     }
-//   })
-//   .catch(err => logError(err));
-// }
-//
+/**
+ * Gets the project settings from the project dotfile. Logs errors.
+ * ! Should be used instead of `DOTFILE.PROJECT().read()`
+ * @param  {boolean} failSilently Don't err when dot file DNE.
+ * @return {Promise<ProjectSettings>} A promise to get the project dotfile as object.
+ */
+export async function getProjectSettings(failSilently?: boolean): Promise<ProjectSettings> {
+  return new Promise<ProjectSettings>((resolve) => {
+    const fail = (silent?: boolean) => silent
+      ? resolve()
+      : logError(null, ERROR.SETTINGS_DNE);
+    const dotfile = DOTFILE.PROJECT();
+    if (dotfile) {
+      // Found a dotfile, but does it have the settings, or is it corrupted?
+      dotfile
+        .read<ProjectSettings>()
+        .then((settings) => {
+          // Settings must have the file ID. Otherwise we err.
+          if (settings.fileId) {
+            resolve(settings);
+          } else {
+            // TODO: Better error message
+            fail(); // Script ID DNE
+          }
+        })
+        .catch(() => {
+          fail(failSilently); // Failed to read dotfile
+        });
+    } else {
+      fail(); // Never found a dotfile
+    }
+  })
+  .catch(err => logError(err));
+}
+
+// TODO: Cleanup
 // /**
 //  * Gets the API FileType. Assumes the path is valid.
 //  * @param  {string} filePath  The file path

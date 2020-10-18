@@ -39,7 +39,8 @@ import logout from './commands/logout';
 // TODO: Cleanup
 // import logs from './commands/logs';
 // import openCmd from './commands/openCmd';
-// import pull from './commands/pull';
+import pull from './commands/pull';
+// TODO: Cleanup
 // import push from './commands/push';
 // import run from './commands/run';
 // import setting from './commands/setting';
@@ -118,19 +119,18 @@ commander
   .option('--rootDir <rootDir>', 'Local root directory in which clsheets will store your project files.')
   .action(handleError(clone));
 
+/**
+ * Fetches a project from either a provided or saved file id.
+ * Updates local files with Google Sheets project.
+ * @name pull
+ * @example pull
+ */
+commander
+  .command('pull')
+  .description('Fetch a remote project')
+  .action(handleError(pull));
+
 // TODO: Cleanup
-// /**
-//  * Fetches a project from either a provided or saved script id.
-//  * Updates local files with Apps Script project.
-//  * @name pull
-//  * @example pull
-//  */
-// commander
-//   .command('pull')
-//   .description('Fetch a remote project')
-//   .option('--versionNumber <version>', 'The version number of the project to retrieve.')
-//   .action(handleError(pull));
-//
 // /**
 //  * Force writes all local files to the script management server.
 //  * @name push

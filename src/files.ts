@@ -1,3 +1,4 @@
+import { sheets_v4 } from 'googleapis';
 import path from 'path';
 // TODO: Cleanup
 // import findUp from 'find-up';
@@ -22,6 +23,7 @@ import {
     logError,
     spinner,
 } from './utils';
+import Schema$Spreadsheet = sheets_v4.Schema$Spreadsheet;
 
 // @see https://nodejs.org/api/fs.html#fs_fs_readfilesync_path_options
 export const FS_OPTIONS = { encoding: 'utf8' };
@@ -282,10 +284,55 @@ export async function fetchProject(
       throw Error(ERROR.FILE_ID);
     }
     spinner.stop(true);
-    const data = res.data;
+    const data = removeCalculatedData(res.data);
     if (!data.sheets) throw Error(ERROR.FILE_ID_INCORRECT(fileId));
     if (!silent) console.log(LOG.CLONE_SUCCESS(data.sheets.length));
     return data as SpreadsheetFile;
+}
+
+function removeCalculatedData(data: Schema$Spreadsheet): Schema$Spreadsheet {
+    return {
+        dataSources: data.dataSources,
+        dataSourceSchedules: data.dataSourceSchedules,
+        developerMetadata: data.developerMetadata,
+        namedRanges: data.namedRanges,
+        properties: data.properties,
+        sheets: data.sheets?.map(s => ({
+            bandedRanges: s.bandedRanges,
+            basicFilter: s.basicFilter,
+            charts: s.charts,
+            columnGroups: s.columnGroups,
+            conditionalFormats: s.conditionalFormats,
+            data: s.data?.map(d => ({
+                columnMetadata: d.columnMetadata,
+                rowData: d.rowData?.map(r => ({
+                    values: r.values?.map(v => ({
+                        dataSourceFormula: v.dataSourceFormula,
+                        dataSourceTable: v.dataSourceTable,
+                        dataValidation: v.dataValidation,
+                        hyperLink: v.hyperlink,
+                        note: v.note,
+                        pivotTable: v.pivotTable,
+                        textFormatRuns: v.textFormatRuns,
+                        userEnteredFormat: v.userEnteredFormat,
+                        userEnteredValue: v.userEnteredValue
+                    }))
+                })),
+                rowMetadata: d.rowMetadata,
+                startColumn: d.startColumn,
+                startRow: d.startRow
+            })),
+            developerMetadata: s.developerMetadata,
+            filterViews: s.filterViews,
+            merges: s.merges,
+            properties: s.properties,
+            protectedRanges: s.protectedRanges,
+            rowGroups: s.rowGroups,
+            slicers: s.slicers
+        })),
+        spreadsheetId: data.spreadsheetId,
+        spreadsheetUrl: data.spreadsheetUrl
+    }
 }
 
 /**
