@@ -124,7 +124,7 @@
 //             await addScopeToManifest(scopes);
 //             const numScopes = scopes.length;
 //             console.log(
-//               `Added ${numScopes} ` + `${pluralize('scope', numScopes)} to your appsscript.json' oauthScopes`,
+//               `Added ${numScopes} ` + `${pluralize('scope', numScopes)} to your spreadsheet.json' oauthScopes`,
 //             );
 //             console.log('Please `clsheets login --creds <file>` to log in with these new scopes.');
 //           });

@@ -36,5 +36,5 @@ export const URL = {
     // SCRIPT_API_USER: 'https://script.google.com/home/usersettings',
     // // It is too expensive to get the script URL from the Drive API. (Async/not offline)
     // SCRIPT: (scriptId: string) => `https://script.google.com/d/${scriptId}/edit`,
-    // DRIVE: (driveId: string) => `https://drive.google.com/open?id=${driveId}`,
+    DRIVE: (driveId: string) => `https://drive.google.com/open?id=${driveId}`,
 };

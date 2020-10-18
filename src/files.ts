@@ -1,36 +1,40 @@
+import path from 'path';
 // TODO: Cleanup
-// import path from 'path';
 // import findUp from 'find-up';
-// import fs from 'fs-extra';
-// import mkdirp from 'mkdirp';
+import fs from 'fs-extra';
+import mkdirp from 'mkdirp';
+// TODO: Cleanup
 // import multimatch from 'multimatch';
 // import recursive from 'recursive-readdir';
 // import ts2gas from 'ts2gas';
 // import ts from 'typescript';
-// import { loadAPICredentials, script } from './auth';
-// import { DOT, DOTFILE } from './dotfile';
-// import {
-//   ERROR,
-//   LOG,
-//   PROJECT_MANIFEST_FILENAME,
-//   checkIfOnline,
-//   getAPIFileType,
-//   getProjectSettings,
-//   logError,
-//   spinner,
-// } from './utils';
+import { loadAPICredentials, sheets } from './auth';
+import { DOT/*, DOTFILE TODO: Cleanup*/ } from './dotfile';
+import {
+    ERROR,
+    LOG,
+    // TODO: Cleanup
+    // PROJECT_MANIFEST_FILENAME,
+    checkIfOnline,
+    // TODO: Cleanup
+    // getAPIFileType,
+    // getProjectSettings,
+    logError,
+    spinner,
+} from './utils';
 
 // @see https://nodejs.org/api/fs.html#fs_fs_readfilesync_path_options
 export const FS_OPTIONS = { encoding: 'utf8' };
 
+// A Spreadsheet API File
+interface SpreadsheetFile {
+    // TODO: Cleanup
+    // name: string;
+    // type: string;
+    // source: string;
+}
+
 // TODO: Cleanup
-// // An Apps Script API File
-// interface AppsScriptFile {
-//   name: string;
-//   type: string;
-//   source: string;
-// }
-//
 // // Used to receive files tracked by current project
 // type FilesCallback =
 // (error: Error | boolean, result: string[][] | null, files: Array<AppsScriptFile | undefined> | null) => void;
@@ -44,15 +48,15 @@ export const FS_OPTIONS = { encoding: 'utf8' };
 // export function getFileType(type: string, fileExtension?: string): string {
 //   return type === 'SERVER_JS' ? fileExtension || 'js' : type.toLowerCase();
 // }
-//
-// /**
-//  * Returns true if the user has a clsheets project.
-//  * @returns {boolean} If .clsheets.json exists.
-//  */
-// export function hasProject(): boolean {
-//   return fs.existsSync(DOT.PROJECT.PATH);
-// }
-//
+
+/**
+ * Returns true if the user has a clsheets project.
+ * @returns {boolean} If .clsheets.json exists.
+ */
+export function hasProject(): boolean {
+    return fs.existsSync(DOT.PROJECT.PATH);
+}
+
 // /**
 //  * Returns in tsconfig.json.
 //  * @returns {ts.TranspileOptions} if tsconfig.json not exists, return undefined.
@@ -148,7 +152,7 @@ export const FS_OPTIONS = { encoding: 'utf8' };
 //           type = 'SERVER_JS';
 //         }
 //
-//         // Formats rootDir/appsscript.json to appsscript.json.
+//         // Formats rootDir/spreadsheet.json to spreadsheet.json.
 //         // Preserves subdirectory names in rootDir
 //         // (rootDir/foo/Code.js becomes foo/Code.js)
 //         const formattedName = getAppsScriptFileName(rootDir, name);
@@ -215,7 +219,7 @@ export const FS_OPTIONS = { encoding: 'utf8' };
 //                                 normalizedName: string,
 //                                 ignoreMatches: string[]): boolean {
 //   let valid = true; // Valid by default, until proven otherwise.
-//   // Has a type or is appsscript.json
+//   // Has a type or is spreadsheet.json
 //   let isValidJSONIfJSON = true;
 //   if (type === 'JSON') {
 //     isValidJSONIfJSON = rootDir
@@ -238,7 +242,7 @@ export const FS_OPTIONS = { encoding: 'utf8' };
 //
 // /**
 //  * Gets the name of the file for Apps Script.
-//  * Formats rootDir/appsscript.json to appsscript.json.
+//  * Formats rootDir/spreadsheet.json to spreadsheet.json.
 //  * Preserves subdirectory names in rootDir
 //  * (rootDir/foo/Code.js becomes foo/Code.js)
 //  * @param {string} rootDir The directory to save the project files to.
@@ -251,65 +255,53 @@ export const FS_OPTIONS = { encoding: 'utf8' };
 //   fullFilePathNoExt = fullFilePathNoExt.replace(/\\/g, '/');
 //   return fullFilePathNoExt;
 // }
-//
-// /**
-//  * Fetches the files for a project from the server
-//  * @param {string} scriptId The project script id
-//  * @param {number?} versionNumber The version of files to fetch.
-//  * @returns {AppsScriptFile[]} Fetched files
-//  */
-// export async function fetchProject(
-//   scriptId: string,
-//   versionNumber?: number,
-//   silent = false,
-// ): Promise<AppsScriptFile[]> {
-//   await checkIfOnline();
-//   await loadAPICredentials();
-//   spinner.start();
-//   let res;
-//   try {
-//     res = await script.projects.getContent({
-//       scriptId,
-//       versionNumber,
-//     });
-//   } catch (error) {
-//     if (error.statusCode === 404) {
-//       throw Error(ERROR.SCRIPT_ID_INCORRECT(scriptId));
-//     }
-//     throw Error(ERROR.SCRIPT_ID);
-//   }
-//   spinner.stop(true);
-//   const data = res.data;
-//   if (!data.files) throw Error(ERROR.SCRIPT_ID_INCORRECT(scriptId));
-//   if (!silent) console.log(LOG.CLONE_SUCCESS(data.files.length));
-//   return data.files as AppsScriptFile[];
-// }
-//
-// /**
-//  * Writes files locally to `pwd` with dots converted to subdirectories.
-//  * @param {AppsScriptFile[]} Files to wirte
-//  * @param {string?} rootDir The directory to save the project files to. Defaults to `pwd`
-//  */
-// export async function writeProjectFiles(files: AppsScriptFile[], rootDir = '') {
-//   const { fileExtension } = await getProjectSettings();
-//   // ? following statement mutates variable `files`. Is that desirable?
-//   files.sort((file1, file2) => file1.name.localeCompare(file2.name));
-//   const sortedFiles = files;
-//   sortedFiles.forEach((file) => {
-//     const filePath = `${file.name}.${getFileType(file.type, fileExtension)}`;
-//     const truePath = `${rootDir || '.'}/${filePath}`;
-//     mkdirp(path.dirname(truePath), err => {
-//       if (err) logError(err, ERROR.FS_DIR_WRITE);
-//       if (!file.source) return; // disallow empty files
-//       fs.writeFile(truePath, file.source, err => {
-//         if (err) logError(err, ERROR.FS_FILE_WRITE);
-//       });
-//       // Log only filename if pulling to root (Code.gs vs ./Code.gs)
-//       console.log(`└─ ${rootDir ? truePath : filePath}`);
-//     });
-//   });
-// }
-//
+
+// noinspection JSCommentMatchesSignature
+/**
+ * Fetches the spreadsheet from the server
+ * @param {string} fileId The spreadsheet file id
+ * @returns {SpreadsheetFile} Fetched file
+ */
+export async function fetchProject(
+  fileId: string,
+  silent = false,
+): Promise<SpreadsheetFile> {
+    await checkIfOnline();
+    await loadAPICredentials();
+    spinner.start();
+    let res;
+    try {
+        res = await sheets.spreadsheets.get({
+            spreadsheetId: fileId,
+            includeGridData: true
+        })
+    } catch (error) {
+      if (error.code === 404) {
+        throw Error(ERROR.FILE_ID_INCORRECT(fileId));
+      }
+      throw Error(ERROR.FILE_ID);
+    }
+    spinner.stop(true);
+    const data = res.data;
+    if (!data.sheets) throw Error(ERROR.FILE_ID_INCORRECT(fileId));
+    if (!silent) console.log(LOG.CLONE_SUCCESS(data.sheets.length));
+    return data as SpreadsheetFile;
+}
+
+/**
+ * Writes project locally to `pwd` with dots converted to subdirectories.
+ * @param {SpreadsheetFile} data Data to write
+ * @param {string?} rootDir The directory to save the project files to. Defaults to `pwd`
+ */
+export async function writeProject(data: SpreadsheetFile, rootDir = '') {
+    const filePath = 'spreadsheet.json';
+    const truePath = `${rootDir || '.'}/${filePath}`;
+    mkdirp(path.dirname(truePath), err => {
+        if (err) logError(err, ERROR.FS_DIR_WRITE);
+        fs.writeJSONSync(truePath, data, {spaces: '  '});
+    });
+}
+
 // /**
 //  * Pushes project files to script.google.com.
 //  * @param {boolean} silent If true, doesn't console.log any success message.

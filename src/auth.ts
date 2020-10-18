@@ -53,6 +53,8 @@ const globalOAuth2Client = new OAuth2Client(globalOauth2ClientSettings);
 
 export const OAUTH_SCOPES = [
   // Use the default scopes needed for clsheets.
+  'https://www.googleapis.com/auth/drive.file', // Create Drive files
+
   'https://www.googleapis.com/auth/userinfo.email', // User email address
 ];
 
@@ -62,7 +64,9 @@ export const OAUTH_SCOPES = [
 // // *Global* Google API clients
 // export const script = google.script({ version: 'v1', auth: globalOAuth2Client });
 // export const logger = google.logging({ version: 'v2', auth: globalOAuth2Client });
-// export const drive = google.drive({ version: 'v3', auth: globalOAuth2Client });
+export const drive = google.drive({ version: 'v3', auth: globalOAuth2Client });
+export const sheets = google.sheets({ version: 'v4', auth: globalOAuth2Client });
+// TODO: Cleanup
 // export const discovery = google.discovery({ version: 'v1' });
 // export const serviceUsage = google.serviceusage({
 //   version: 'v1',
@@ -177,7 +181,7 @@ export async function getLoggedInEmail() {
  * Loads the Apps Script API credentials for the CLI.
  * Required before every API call.
  */
-/*export TODO: Cleanup*/ async function loadAPICredentials(local = false): Promise<ClaspToken> {
+export async function loadAPICredentials(local = false): Promise<ClaspToken> {
   // Gets the OAuth settings. May be local or global.
   const rc: ClaspToken = await getOAuthSettings(local);
   await setOauthClientCredentials(rc);

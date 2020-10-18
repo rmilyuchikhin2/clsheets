@@ -1,24 +1,25 @@
+import path from 'path';
+import fs from 'fs-extra';
 // TODO: Cleanup
-// import path from 'path';
-// import fs from 'fs-extra';
 // import { PUBLIC_ADVANCED_SERVICES } from './apis';
 // import { enableOrDisableAPI, isEnabled } from './apiutils';
-// import { DOT } from './dotfile';
+import { DOT } from './dotfile';
+// TODO: Cleanup
 // import { FS_OPTIONS } from './files';
-// import { ERROR, PROJECT_MANIFEST_FILENAME, getProjectSettings, getValidJSON, logError } from './utils';
-//
+import { /*ERROR, TODO: Cleanup*/ PROJECT_MANIFEST_FILENAME/*, getProjectSettings, getValidJSON, logError TODO: Cleanup*/ } from './utils';
+
+/**
+ * Checks if the rootDir appears to be a valid project.
+ *
+ * @param {string} rootDir dir to check.
+ *
+ * @return {boolean} True if valid project, false otherwise
+ */
+export const manifestExists = (rootDir: string = DOT.PROJECT.DIR): boolean =>
+  fs.existsSync(path.join(rootDir, PROJECT_MANIFEST_FILENAME));
+
 // /**
-//  * Checks if the rootDir appears to be a valid project.
-//  *
-//  * @param {string} rootDir dir to check.
-//  *
-//  * @return {boolean} True if valid project, false otherwise
-//  */
-// export const manifestExists = (rootDir: string = DOT.PROJECT.DIR): boolean =>
-//   fs.existsSync(path.join(rootDir, PROJECT_MANIFEST_FILENAME));
-//
-// /**
-//  * Reads the appsscript.json manifest file.
+//  * Reads the spreadsheet.json manifest file.
 //  * @returns {Promise<Manifest>} A promise to get the manifest file as object.
 //  * @see https://developers.google.com/apps-script/concepts/manifests
 //  */
@@ -35,7 +36,7 @@
 // }
 //
 // /**
-//  * Writes the appsscript.json manifest file.
+//  * Writes the spreadsheet.json manifest file.
 //  * @param {Manifest} manifest The new manifest to write.
 //  */
 // async function writeManifest(manifest: Manifest) {

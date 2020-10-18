@@ -48,15 +48,16 @@ const PROJECT_NAME = 'clsheets';
 // // TODO: workaround the circular dependency with `files.ts`
 // // @see https://nodejs.org/api/fs.html#fs_fs_readfilesync_path_options
 // const FS_OPTIONS = { encoding: 'utf8' };
-//
-// // Project settings file (Saved in .clsheets.json)
-// export interface ProjectSettings {
-//   scriptId: string;
-//   rootDir?: string;
-//   projectId?: string;
-//   fileExtension?: string;
-//   filePushOrder?: string[];
-// }
+
+// Project settings file (Saved in .clsheets.json)
+export interface ProjectSettings {
+    // TODO: Cleanup
+    // scriptId: string;
+    // rootDir?: string;
+    // projectId?: string;
+    // fileExtension?: string;
+    // filePushOrder?: string[];
+}
 
 // Dotfile names
 export const DOT = {
@@ -73,9 +74,8 @@ export const DOT = {
      * This dotfile saves clsheets project information, local to project directory.
      */
     PROJECT: {
-        // TODO: Cleanup
-        // DIR: path.join('.', '/'), // Relative to where the command is run. See DOTFILE.PROJECT()
-        // NAME: `${PROJECT_NAME}.json`,
+        DIR: path.join('.', '/'), // Relative to where the command is run. See DOTFILE.PROJECT()
+        NAME: `${PROJECT_NAME}.json`,
         PATH: `.${PROJECT_NAME}.json`,
     },
     /**
@@ -120,7 +120,7 @@ export const DOTFILE = {
     //         '**/**',
     //         '',
     //         '# except the extensions...',
-    //         '!appsscript.json',
+    //         '!spreadsheet.json',
     //         '!**/*.gs',
     //         '!**/*.js',
     //         '!**/*.ts',
@@ -134,15 +134,15 @@ export const DOTFILE = {
     //     }
     //   });
     // },
-    // /**
-    //  * Gets the closest DOT.PROJECT.NAME in the parent directory of the directory
-    //  * that the command was run in.
-    //  * @return {Dotf} A dotf with that dotfile. Null if there is no file
-    //  */
-    // PROJECT: () => {
-    //   const projectPath = findUp.sync(DOT.PROJECT.PATH);
-    //   return dotf(projectPath ? path.dirname(projectPath) : DOT.PROJECT.DIR, DOT.PROJECT.NAME);
-    // },
+    /**
+     * Gets the closest DOT.PROJECT.NAME in the parent directory of the directory
+     * that the command was run in.
+     * @return {Dotf} A dotf with that dotfile. Null if there is no file
+     */
+    PROJECT: () => {
+        const projectPath = findUp.sync(DOT.PROJECT.PATH);
+        return dotf(projectPath ? path.dirname(projectPath) : DOT.PROJECT.DIR, DOT.PROJECT.NAME);
+    },
     // Stores {ClaspCredentials}
     RC: dotf(DOT.RC.DIR, DOT.RC.NAME),
     // Stores {ClaspCredentials}

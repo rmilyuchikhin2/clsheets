@@ -34,7 +34,7 @@
 //  * 1. Resources > Advanced Google Services
 //  * 1. Enable all services
 //  * 1. View > Show manifest file
-//  * 1. View appsscript.json
+//  * 1. View spreadsheet.json
 //  */
 // export const PUBLIC_ADVANCED_SERVICES: AdvancedService[] = [
 //   {

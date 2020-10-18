@@ -1,25 +1,23 @@
+import path from 'path';
 // TODO: Cleanup
-// import path from 'path';
 // import chalk from 'chalk';
 import { Spinner } from 'cli-spinner';
 import fs from 'fs-extra';
 // TODO: Cleanup
 // import { script_v1 } from 'googleapis';
-// import pluralize from 'pluralize';
-import { ClaspToken, DOT, DOTFILE/*, ProjectSettings TODO: Cleanup*/ } from './dotfile';
+import pluralize from 'pluralize';
+import { ClaspToken, DOT, DOTFILE, ProjectSettings } from './dotfile';
 // TODO: Cleanup
 // import { projectIdPrompt } from './inquirer';
 import { URL } from './urls';
 
-// TODO: Cleanup
-// const ucfirst = (str: string) => str && `${str[0].toUpperCase()}${str.slice(1)}`;
+const ucfirst = (str: string) => str && `${str[0].toUpperCase()}${str.slice(1)}`;
 const isOnline: (options?: { timeout?: number; version?: 'v4'|'v6'; }) => boolean = require('is-online');
 
 // Names / Paths
 export const PROJECT_NAME = 'clsheets';
-// TODO: Cleanup
-// export const PROJECT_MANIFEST_BASENAME = 'appsscript';
-// export const PROJECT_MANIFEST_FILENAME = PROJECT_MANIFEST_BASENAME + '.json';
+export const PROJECT_MANIFEST_BASENAME = 'spreadsheet';
+export const PROJECT_MANIFEST_FILENAME = PROJECT_MANIFEST_BASENAME + '.json';
 
 /**
  * The installed credentials. This is a file downloaded from console.developers.google.com
@@ -59,7 +57,7 @@ export function getOAuthSettings(local: boolean): Promise<ClaspToken> {
   const RC = (local) ? DOTFILE.RC_LOCAL() : DOTFILE.RC;
   return RC
     .read<ClaspToken>()
-    .catch((_err: Error) => (() => { throw new Error('Not implemented: 0fd36957-b3a5-49a8-ab57-0525498642fd'); })() /*logError(err, ERROR.NO_CREDENTIALS(local)) TODO: Cleanup*/);
+    .catch((err: Error) => logError(err, ERROR.NO_CREDENTIALS(local)));
 }
 
 // Error messages (some errors take required params)
@@ -80,8 +78,14 @@ Forgot ${PROJECT_NAME} commands? Get help:\n  ${PROJECT_NAME} --help`,
 //   DEPLOYMENT_COUNT: `Unable to deploy; Scripts may only have up to 20 versioned deployments at a time.`,
 //   DRIVE: `Something went wrong with the Google Drive API`,
 //   EXECUTE_ENTITY_NOT_FOUND: `Script API executable not published/deployed.`,
-//   FOLDER_EXISTS: `Project file (${DOT.PROJECT.PATH}) already exists.`,
-//   FS_DIR_WRITE: 'Could not create directory.',
+  FILE_ID: `Could not find Google Sheets file.
+Did you provide the correct fileId?
+Are you logged in to the correct account?`,
+  FILE_ID_INCORRECT: (fileId: string) => `The fileId "${fileId}" looks incorrect.
+Did you provide the correct scriptId?`,
+  FOLDER_EXISTS: `Project file (${DOT.PROJECT.PATH}) already exists.`,
+  FS_DIR_WRITE: 'Could not create directory.',
+// TODO: Cleanup
 //   FS_FILE_WRITE: 'Could not write file.',
 //   INVALID_JSON: `Input params not Valid JSON string. Please fix and try again`,
   LOGGED_IN_LOCAL: `Warning: You seem to already be logged in *locally*. You have a ./.clsheetsrc.json`,
@@ -92,8 +96,9 @@ Forgot ${PROJECT_NAME} commands? Get help:\n  ${PROJECT_NAME} --help`,
 //   LOGS_UNAVAILABLE: 'StackDriver logs are getting ready, try again soon.',
 //   NO_API: (enable: boolean, api: string) =>
 //     `API ${api} doesn\'t exist. Try \'clsheets apis ${enable ? 'enable' : 'disable'} sheets\'.`,
-//   NO_CREDENTIALS: (local: boolean) => `Could not read API credentials. ` +
-//     `Are you logged in ${local ? 'locall' : 'globall'}y?`,
+  NO_CREDENTIALS: (local: boolean) => `Could not read API credentials. ` +
+    `Are you logged in ${local ? 'locall' : 'globall'}y?`,
+// TODO: Cleanup
 //   NO_FUNCTION_NAME: 'N/A',
 //   NO_GCLOUD_PROJECT: `No projectId found in your ${DOT.PROJECT.PATH} file.`,
 //   NO_LOCAL_CREDENTIALS: `Requires local crendetials:\n\n  ${PROJECT_NAME} login --creds <file.json>`,
@@ -115,11 +120,6 @@ Forgot ${PROJECT_NAME} commands? Get help:\n  ${PROJECT_NAME} --help`,
 //   RUN_NODATA: 'Script execution API returned no data.',
 //   READ_ONLY_DELETE: 'Unable to delete read-only deployment.',
 //   SCRIPT_ID_DNE: `No scriptId found in your ${DOT.PROJECT.PATH} file.`,
-//   SCRIPT_ID_INCORRECT: (scriptId: string) => `The scriptId "${scriptId}" looks incorrect.
-// Did you provide the correct scriptId?`,
-//   SCRIPT_ID: `Could not find script.
-// Did you provide the correct scriptId?
-// Are you logged in to the correct account with the script?`,
 //   SETTINGS_DNE: `
 // No valid ${DOT.PROJECT.PATH} project file. You may need to \`create\` or \`clone\` a project first.`,
 //   UNAUTHENTICATED_LOCAL: `Error: Local client credentials unauthenticated. Check scopes/authorization.`,
@@ -141,21 +141,15 @@ export const LOG = {
   AUTH_PAGE_SUCCESSFUL: `Logged in! You may close this page. `, // HTML Redirect Page
   AUTH_SUCCESSFUL: `Authorization successful.`,
   AUTHORIZE: (authUrl: string) => `🔑 Authorize ${PROJECT_NAME} by visiting this url:\n${authUrl}\n`,
+  CLONE_SUCCESS: (sheetNum: number) => `Cloned ${sheetNum} ${pluralize('sheets', sheetNum)}.`,
 // TODO: Cleanup
-//   CLONE_SUCCESS: (fileNum: number) => `Warning: files in subfolder are not accounted for unless you set a '${
-//     DOT.IGNORE.PATH
-//   }' file.
-// Cloned ${fileNum} ${pluralize('files', fileNum)}.`,
 //   CLONING: 'Cloning files...',
 //   CLONE_SCRIPT_QUESTION: 'Clone which script?',
 //   CREATE_SCRIPT_QUESTION: 'Create which script?',
-//   CREATE_DRIVE_FILE_FINISH: (filetype: string, fileid: string) =>
-//     `Created new ${getFileTypeName(filetype) || '(unknown type)'}: ${URL.DRIVE(fileid)}`,
-//   CREATE_DRIVE_FILE_START: (filetype: string) =>
-//     `Creating new ${getFileTypeName(filetype) || '(unknown type)'}...`,
-//   CREATE_PROJECT_FINISH: (filetype: string, scriptId: string) =>
-//     `Created new ${getScriptTypeName(filetype)} script: ${URL.SCRIPT(scriptId)}`,
-//   CREATE_PROJECT_START: (title: string) => `Creating new script: ${title}...`,
+  CREATE_DRIVE_FILE_FINISH: (fileid: string) =>
+    `Created new Google Sheets file: ${URL.DRIVE(fileid)}`,
+  CREATE_DRIVE_FILE_START: `Creating new Google Sheets file...`,
+// TODO: Cleanup
 //   CREDENTIALS_FOUND: 'Credentials found, using those to login...',
   CREDS_FROM_PROJECT: (projectId: string) => `Using credentials located here:\n${URL.CREDS(projectId)}\n`,
 // TODO: Cleanup
@@ -220,7 +214,7 @@ export const LOG = {
 //     clsheets login --creds <client_credentials.json>`,
 };
 
-/*export TODO: Cleanup*/ const spinner = new Spinner();
+export const spinner = new Spinner();
 
 /**
  * Logs errors to the user such as unauthenticated or permission denied and exits Node.
@@ -281,15 +275,15 @@ export const logError = (err: any, description = '', code = 1): never => {
 //     if (webEntryPoint) return webEntryPoint.webApp && webEntryPoint.webApp.url;
 //     logError(null, ERROR.NO_WEBAPP(deployment.deploymentId || ''));
 //   }
-//
-// /**
-//  * Gets default project name.
-//  * @return {string} default project name.
-//  */
-// export function getDefaultProjectName(): string {
-//   return ucfirst(path.basename(process.cwd()));
-// }
-//
+
+/**
+ * Gets default project name.
+ * @return {string} default project name.
+ */
+export function getDefaultProjectName(): string {
+  return ucfirst(path.basename(process.cwd()));
+}
+
 // /**
 //  * Gets the project settings from the project dotfile. Logs errors.
 //  * ! Should be used instead of `DOTFILE.PROJECT().read()`
@@ -359,21 +353,14 @@ export async function checkIfOnline() {
   return logError(null, ERROR.OFFLINE);
 }
 
-// /**
-//  * Saves the project settings in the project dotfile.
-//  * @param {ProjectSettings} newProjectSettings The project settings
-//  * @param {boolean} append Appends the settings if true.
-//  */
-// export async function saveProject(
-//   newProjectSettings: ProjectSettings,
-//   append = true): Promise<ProjectSettings> {
-//   if (append) {
-//     const projectSettings: ProjectSettings = await getProjectSettings();
-//     newProjectSettings = { ...projectSettings, ...newProjectSettings };
-//   }
-//   return DOTFILE.PROJECT().write(newProjectSettings);
-// }
-//
+/**
+ * Saves the project settings in the project dotfile.
+ * @param {ProjectSettings} newProjectSettings The project settings
+ */
+export async function saveProject(newProjectSettings: ProjectSettings): Promise<ProjectSettings> {
+  return DOTFILE.PROJECT().write(newProjectSettings);
+}
+
 // /**
 //  * Gets the script's Cloud Platform Project Id from project settings file or prompt for one.
 //  * @returns {Promise<string>} A promise to get the projectId string.

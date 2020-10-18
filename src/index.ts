@@ -27,8 +27,7 @@ import { PROJECT_NAME, handleError } from './utils';
 // import apis from './commands/apis';
 // import clone from './commands/clone';
 import commander from 'commander';
-// TODO: Cleanup
-// import create from './commands/create';
+import create from './commands/create';
 import defaultCmd from './commands/defaultCmd';
 // TODO: Cleanup
 // import deploy from './commands/deploy';
@@ -87,35 +86,28 @@ commander
   .description('Log out')
   .action(handleError(logout));
 
+/**
+ * Creates a new Google Sheets file.
+ * @name create
+ * @param {string?} [--title] An optional spreadsheet title.
+ * @param {string?} [--folderId] An optional folder Id. The Drive ID of a folder
+ *   where the Google Sheets file is created.
+ *   https://drive.google.com/open?id=<ID>
+ * @param {string?} [--rootDir] Local root directory that store your project files.
+ * @example create
+ * @example create "My Script"
+ * @example create "My Script" "1D_Gxyv*****************************NXO7o"
+ * @see https://developers.google.com/drive/api/v3/reference/files/create
+ */
+commander
+  .command('create')
+  .description('Create a Google Sheets file')
+  .option('--title <title>', 'The spreadsheet title.')
+  .option('--folderId <id>', 'A parent folder Id.')
+  .option('--rootDir <rootDir>', 'Local root directory in which clsheets will store your project files.')
+  .action(handleError(create));
+
 // TODO: Cleanup
-// /**
-//  * Creates a new script project.
-//  * @name create
-//  * @param {string?} [--title] An optional project title.
-//  * @param {string?} [--parentId] An optional project parent Id. The Drive ID of a parent file
-//  *   that the created script project is bound to. This is usually the ID of a
-//  *   Google Doc, Google Sheet, Google Form, or Google Slides file. If not set, a
-//  *   standalone script project is created.
-//  *   https://drive.google.com/open?id=<ID>
-//  * @param {string?} [--rootDir] Local root directory that store your project files.
-//  * @example create
-//  * @example create "My Script"
-//  * @example create "My Script" "1D_Gxyv*****************************NXO7o"
-//  * @see https://developers.google.com/apps-script/api/reference/rest/v1/projects/create
-//  */
-// commander
-//   .command('create')
-//   .description('Create a script')
-//   .option(
-//     '--type <type>',
-//     // tslint:disable-next-line: max-line-length
-//     'Creates a new Apps Script project attached to a new Document, Spreadsheet, Presentation, Form, or as a standalone script, web app, or API.',
-//   )
-//   .option('--title <title>', 'The project title.')
-//   .option('--parentId <id>', 'A project parent Id.')
-//   .option('--rootDir <rootDir>', 'Local root directory in which clsheets will store your project files.')
-//   .action(handleError(create));
-//
 // /**
 //  * Fetches a project and saves the script id locally.
 //  * @param {string?} [scriptId] The script ID to clone.
