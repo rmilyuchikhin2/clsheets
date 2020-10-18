@@ -50,6 +50,12 @@ const globalOauth2ClientSettings: OAuth2ClientOptions = {
   redirectUri: 'http://localhost',
 };
 const globalOAuth2Client = new OAuth2Client(globalOauth2ClientSettings);
+
+export const OAUTH_SCOPES = [
+  // Use the default scopes needed for clsheets.
+  'https://www.googleapis.com/auth/userinfo.email', // User email address
+];
+
 // TODO: Cleanup
 // let localOAuth2Client: OAuth2Client; // Must be set up after authorize.
 //
@@ -108,36 +114,9 @@ export async function authorize(options: {
     // Set scopes
     let scope = (options.creds) ?
       // Set scopes to custom scopes
-      options.scopes : [
-          // Default to clsheets scopes
-          'https://www.googleapis.com/auth/userinfo.email', // User email address
-          // TODO: Cleanup
-          // 'https://www.googleapis.com/auth/userinfo.profile',
-        ];
+      options.scopes : OAUTH_SCOPES;
     if (options.creds && scope.length === 0) {
-      // noinspection ExceptionCaughtLocallyJS
-      throw new Error('Not implemented: 187f9f36-b9ab-4b8b-a1ff-009ce43ef903'); // TODO: Cleanup
-      // scope = [
-      //   // Default to clsheets scopes
-      //   'https://www.googleapis.com/auth/script.deployments', // Apps Script deployments
-      //   'https://www.googleapis.com/auth/script.projects', // Apps Script management
-      //   'https://www.googleapis.com/auth/script.webapp.deploy', // Apps Script Web Apps
-      //   'https://www.googleapis.com/auth/drive.metadata.readonly', // Drive metadata
-      //   'https://www.googleapis.com/auth/drive.file', // Create Drive files
-      //   'https://www.googleapis.com/auth/service.management', // Cloud Project Service Management API
-      //   'https://www.googleapis.com/auth/logging.read', // StackDriver logs
-      //   'https://www.googleapis.com/auth/userinfo.email', // User email address
-      //   'https://www.googleapis.com/auth/userinfo.profile',
-      //
-      //   // Extra scope since service.management doesn't work alone
-      //   'https://www.googleapis.com/auth/cloud-platform',
-      // ];
-      // // TODO formal error
-      // // logError(null, 'You need to specify scopes in the manifest.' +
-      // // 'View appsscript.json. Add a list of scopes in "oauthScopes"' +
-      // // 'Tip:' +
-      // // '1. clsheets open' +
-      // // '2. File > Project Properties > Scopes');
+      scope = OAUTH_SCOPES;
     }
     const oAuth2ClientAuthUrlOpts: GenerateAuthUrlOpts = {
       access_type: 'offline',

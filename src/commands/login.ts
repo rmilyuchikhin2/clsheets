@@ -2,7 +2,7 @@
  * Clsheets command method bodies.
  */
 import { readJsonSync } from 'fs-extra';
-import { authorize, getLoggedInEmail } from '../auth';
+import { authorize, getLoggedInEmail, OAUTH_SCOPES } from '../auth';
 import { FS_OPTIONS } from '../files';
 import { ERROR, LOG, checkIfOnline, hasOauthClientSettings, safeIsOnline } from '../utils';
 
@@ -21,8 +21,7 @@ export default async (options: { localhost?: boolean; creds?: string; status?: b
             if (!!email) {
               console.log(LOG.LOGGED_IN_AS(email));
             } else {
-              throw new Error('Not implemented: e9431a40-6e0a-4f96-bbe4-1c28fe23a573'); // TODO: Cleanup
-              // console.log(LOG.LOGGED_IN_UNKNOWN);
+              console.log(LOG.LOGGED_IN_UNKNOWN);
             }
         } else {
             console.log(LOG.NOT_LOGGED_IN);
@@ -44,15 +43,9 @@ export default async (options: { localhost?: boolean; creds?: string; status?: b
 
         // Using own credentials.
         if (options.creds) {
-            const oauthScopes = [
-                // Use the default scopes needed for clsheets.
-                'https://www.googleapis.com/auth/userinfo.email', // User email address
-                // TODO: Cleanup
-                // 'https://www.googleapis.com/auth/userinfo.profile',
-            ];
             console.log('');
             console.log(`Authorizing with the following scopes:`);
-            oauthScopes.forEach(scope => {
+            OAUTH_SCOPES.forEach(scope => {
                 console.log(scope);
             });
 
@@ -61,18 +54,13 @@ export default async (options: { localhost?: boolean; creds?: string; status?: b
             await authorize({
                 useLocalhost,
                 creds: credentials,
-                scopes: oauthScopes,
+                scopes: OAUTH_SCOPES,
             });
         } else {
             // Not using own credentials
             await authorize({
                 useLocalhost,
-                scopes: [
-                    // Use the default scopes needed for clsheets.
-                    'https://www.googleapis.com/auth/userinfo.email', // User email address
-                    // TODO: Cleanup
-                    // 'https://www.googleapis.com/auth/userinfo.profile',
-                ],
+                scopes: OAUTH_SCOPES,
             });
         }
         process.exit(0); // gracefully exit after successful login

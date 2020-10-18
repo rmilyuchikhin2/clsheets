@@ -102,7 +102,8 @@ Forgot ${PROJECT_NAME} commands? Get help:\n  ${PROJECT_NAME} --help`,
 //   NO_NESTED_PROJECTS: '\nNested clsheets projects are not supported.',
 //   NO_VERSIONED_DEPLOYMENTS: `No versioned deployments found in project.`,
 //   NO_WEBAPP: (deploymentId: string) => `Deployment "${deploymentId}" is not deployed as WebApp.`,
-//   OFFLINE: 'Error: Looks like you are offline.',
+  OFFLINE: 'Error: Looks like you are offline.',
+// TODO: Cleanup
 //   ONE_DEPLOYMENT_CREATE: 'Currently just one deployment can be created at a time.',
 //   PAYLOAD_UNKNOWN: 'Unknown StackDriver payload.',
 //   PERMISSION_DENIED_LOCAL: `Error: Permission denied. Be sure that you have:\n` +
@@ -133,8 +134,7 @@ export const LOG = {
 // TODO: Cleanup
 //   ASK_PROJECT_ID: `What is your GCP projectId?`,
   NOT_LOGGED_IN: 'You are not logged in.',
-// TODO: Cleanup
-//   LOGGED_IN_UNKNOWN: 'You are logged in as an unknown user.',
+  LOGGED_IN_UNKNOWN: 'You are logged in as an unknown user.',
   LOGGED_IN_AS: (email: string) => `You are logged in as ${email}.`,
   AUTH_CODE: 'Enter the code from that page here: ',
   // TODO: Make AUTH_PAGE_SUCCESSFUL show an HTML page with something useful!
@@ -356,8 +356,7 @@ export async function checkIfOnline() {
   if (await safeIsOnline()) {
     return true;
   }
-  throw new Error('Not implemented: 4ae972dd-0ef6-4d6b-9199-a450e5f842c1'); // TODO: Cleanup
-  // return logError(null, ERROR.OFFLINE);
+  return logError(null, ERROR.OFFLINE);
 }
 
 // /**
