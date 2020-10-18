@@ -17,8 +17,9 @@ import path from 'path';
 import findUp from 'find-up';
 // TODO: Cleanup
 // import fs from 'fs-extra';
-// import { Credentials } from 'google-auth-library';
-// import { OAuth2ClientOptions } from 'google-auth-library/build/src/auth/oauth2client';
+import { Credentials } from 'google-auth-library';
+import { OAuth2ClientOptions } from 'google-auth-library/build/src/auth/oauth2client';
+// TODO: Cleanup
 // import stripBom from 'strip-bom';
 
 // Getting ready to switch to `dotf` embedded types
@@ -29,7 +30,7 @@ import findUp from 'find-up';
 export declare type Dotf = (dirname: string, name: string) => {
     // TODO: Cleanup
     // exists: () => Promise<boolean>;
-    // read: <T>() => Promise<T>;
+    read: <T>() => Promise<T>;
     write: <T>(obj: T) => Promise<T>;
     // TODO: Cleanup
     // delete: () => Promise<void>;
@@ -173,8 +174,7 @@ export const DOTFILE = {
  * }
  */
 export interface ClaspToken {
-    // TODO: Cleanup
-    // token: Credentials;
-    // oauth2ClientSettings: OAuth2ClientOptions;
-    // isLocalCreds: boolean;
+    token: Credentials;
+    oauth2ClientSettings: OAuth2ClientOptions;
+    isLocalCreds: boolean;
 }

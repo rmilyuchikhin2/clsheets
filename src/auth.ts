@@ -4,8 +4,7 @@
 import { Credentials, GenerateAuthUrlOpts, OAuth2Client, OAuth2ClientOptions } from 'google-auth-library';
 import http from 'http';
 import { AddressInfo } from 'net';
-// TODO: Cleanup
-// import { google, script_v1 } from 'googleapis';
+import { google/*, script_v1 TODO: Cleanup*/ } from 'googleapis';
 import open from 'open';
 import readline from 'readline';
 import url from 'url';
@@ -13,7 +12,7 @@ import { ClaspToken, DOTFILE, Dotfile } from './dotfile';
 // TODO: Cleanup
 // import { oauthScopesPrompt } from './inquirer';
 // import { readManifest } from './manifest';
-import { ClaspCredentials, ERROR, LOG, logError } from './utils';
+import { checkIfOnline, ClaspCredentials, ERROR, getOAuthSettings, LOG, logError } from './utils';
 
 // Auth is complicated. Consider yourself warned.
 // tslint:disable:max-line-length
@@ -50,8 +49,8 @@ const globalOauth2ClientSettings: OAuth2ClientOptions = {
   clientSecret: 'qzvD2FXiyNUlcfa-KoS3IP42',
   redirectUri: 'http://localhost',
 };
+const globalOAuth2Client = new OAuth2Client(globalOauth2ClientSettings);
 // TODO: Cleanup
-// const globalOAuth2Client = new OAuth2Client(globalOauth2ClientSettings);
 // let localOAuth2Client: OAuth2Client; // Must be set up after authorize.
 //
 // // *Global* Google API clients
@@ -183,29 +182,28 @@ export async function authorize(options: {
   }
 }
 
-// TODO: Cleanup
-// export async function getLoggedInEmail() {
-//   await loadAPICredentials();
-//   try {
-//     const response = await google.oauth2('v2').userinfo.get({
-//       auth: globalOAuth2Client,
-//     });
-//     return response.data.email;
-//   } catch (e) {
-//     return undefined;
-//   }
-// }
-//
-// /**
-//  * Loads the Apps Script API credentials for the CLI.
-//  * Required before every API call.
-//  */
-// export async function loadAPICredentials(local = false): Promise<ClaspToken> {
-//   // Gets the OAuth settings. May be local or global.
-//   const rc: ClaspToken = await getOAuthSettings(local);
-//   await setOauthClientCredentials(rc);
-//   return rc;
-// }
+export async function getLoggedInEmail() {
+  await loadAPICredentials();
+  try {
+    const response = await google.oauth2('v2').userinfo.get({
+      auth: globalOAuth2Client,
+    });
+    return response.data.email;
+  } catch (e) {
+    return undefined;
+  }
+}
+
+/**
+ * Loads the Apps Script API credentials for the CLI.
+ * Required before every API call.
+ */
+/*export TODO: Cleanup*/ async function loadAPICredentials(local = false): Promise<ClaspToken> {
+  // Gets the OAuth settings. May be local or global.
+  const rc: ClaspToken = await getOAuthSettings(local);
+  await setOauthClientCredentials(rc);
+  return rc;
+}
 
 /**
  * Requests authorization to manage Google Sheets. Spins up
@@ -280,47 +278,49 @@ async function authorizeWithoutLocalhost(
   return (await client.getToken(authCode)).tokens;
 }
 
+/**
+ * Set OAuth client credentails from rc.
+ * Can be global or local.
+ * Saves new credentials if access token refreshed.
+ * @param {ClaspToken} rc OAuth client settings from rc file.
+ */
+async function setOauthClientCredentials(rc: ClaspToken) {
+  /**
+   * Refreshes the credentials and saves them.
+   */
+  async function refreshCredentials(oAuthClient: OAuth2Client) {
+    const oldExpiry = (oAuthClient.credentials.expiry_date as number) || 0;
+    await oAuthClient.getAccessToken(); // refreshes expiry date if required
+    if (oAuthClient.credentials.expiry_date === oldExpiry) return;
+    rc.token = oAuthClient.credentials;
+  }
+
+  // Set credentials and refresh them.
+  try {
+    await checkIfOnline();
+    if (rc.isLocalCreds) {
+      // noinspection ExceptionCaughtLocallyJS
+      throw new Error('Not implemented: 95117549-5a67-4c96-b80b-b01bccc8bc53'); // TODO: Cleanup
+      // localOAuth2Client = new OAuth2Client({
+      //   clientId: rc.oauth2ClientSettings.clientId,
+      //   clientSecret: rc.oauth2ClientSettings.clientSecret,
+      //   redirectUri: rc.oauth2ClientSettings.redirectUri,
+      // });
+      // localOAuth2Client.setCredentials(rc.token);
+      // await refreshCredentials(localOAuth2Client);
+    }
+    // Always use the global credentials too for non-run functions.
+    globalOAuth2Client.setCredentials(rc.token);
+    await refreshCredentials(globalOAuth2Client);
+
+    // Save the credentials.
+    await (rc.isLocalCreds ? DOTFILE.RC_LOCAL() : DOTFILE.RC).write(rc);
+  } catch (err) {
+    logError(null, ERROR.ACCESS_TOKEN + err);
+  }
+}
+
 // TODO: Cleanup
-// /**
-//  * Set OAuth client credentails from rc.
-//  * Can be global or local.
-//  * Saves new credentials if access token refreshed.
-//  * @param {ClaspToken} rc OAuth client settings from rc file.
-//  */
-// async function setOauthClientCredentials(rc: ClaspToken) {
-//   /**
-//    * Refreshes the credentials and saves them.
-//    */
-//   async function refreshCredentials(oAuthClient: OAuth2Client) {
-//     const oldExpiry = (oAuthClient.credentials.expiry_date as number) || 0;
-//     await oAuthClient.getAccessToken(); // refreshes expiry date if required
-//     if (oAuthClient.credentials.expiry_date === oldExpiry) return;
-//     rc.token = oAuthClient.credentials;
-//   }
-//
-//   // Set credentials and refresh them.
-//   try {
-//     await checkIfOnline();
-//     if (rc.isLocalCreds) {
-//       localOAuth2Client = new OAuth2Client({
-//         clientId: rc.oauth2ClientSettings.clientId,
-//         clientSecret: rc.oauth2ClientSettings.clientSecret,
-//         redirectUri: rc.oauth2ClientSettings.redirectUri,
-//       });
-//       localOAuth2Client.setCredentials(rc.token);
-//       await refreshCredentials(localOAuth2Client);
-//     }
-//     // Always use the global credentials too for non-run functions.
-//     globalOAuth2Client.setCredentials(rc.token);
-//     await refreshCredentials(globalOAuth2Client);
-//
-//     // Save the credentials.
-//     await (rc.isLocalCreds ? DOTFILE.RC_LOCAL() : DOTFILE.RC).write(rc);
-//   } catch (err) {
-//     logError(null, ERROR.ACCESS_TOKEN + err);
-//   }
-// }
-//
 // /**
 //  * Compare global OAuth client scopes against manifest and prompt user to
 //  * authorize if new scopes found (local OAuth credentails only).

@@ -6,7 +6,7 @@ import fs from 'fs-extra';
 // TODO: Cleanup
 // import { script_v1 } from 'googleapis';
 // import pluralize from 'pluralize';
-import { /*ClaspToken, TODO: Cleanup*/ DOT/*, DOTFILE, ProjectSettings TODO: Cleanup*/ } from './dotfile';
+import { ClaspToken, DOT, DOTFILE/*, ProjectSettings TODO: Cleanup*/ } from './dotfile';
 // TODO: Cleanup
 // import { projectIdPrompt } from './inquirer';
 import { URL } from './urls';
@@ -49,19 +49,18 @@ export interface ClaspCredentials {
 export const hasOauthClientSettings = (local = false): boolean =>
     local ? fs.existsSync(DOT.RC.ABSOLUTE_LOCAL_PATH) : fs.existsSync(DOT.RC.ABSOLUTE_PATH);
 
-// TODO: Cleanup
-// /**
-//  * Gets the OAuth client settings from rc file.
-//  * @param {boolean} local If true, gets the local OAuth settings. Global otherwise.
-//  * ! Should be used instead of `DOTFILE.RC?().read()`
-//  * @returns {Promise<ClaspToken>} A promise to get the rc file as object.
-//  */
-// export function getOAuthSettings(local: boolean): Promise<ClaspToken> {
-//   const RC = (local) ? DOTFILE.RC_LOCAL() : DOTFILE.RC;
-//   return RC
-//     .read<ClaspToken>()
-//     .catch((err: Error) => logError(err, ERROR.NO_CREDENTIALS(local)));
-// }
+/**
+ * Gets the OAuth client settings from rc file.
+ * @param {boolean} local If true, gets the local OAuth settings. Global otherwise.
+ * ! Should be used instead of `DOTFILE.RC?().read()`
+ * @returns {Promise<ClaspToken>} A promise to get the rc file as object.
+ */
+export function getOAuthSettings(local: boolean): Promise<ClaspToken> {
+  const RC = (local) ? DOTFILE.RC_LOCAL() : DOTFILE.RC;
+  return RC
+    .read<ClaspToken>()
+    .catch((_err: Error) => (() => { throw new Error('Not implemented: 0fd36957-b3a5-49a8-ab57-0525498642fd'); })() /*logError(err, ERROR.NO_CREDENTIALS(local)) TODO: Cleanup*/);
+}
 
 // Error messages (some errors take required params)
 export const ERROR = {
@@ -133,9 +132,10 @@ Forgot ${PROJECT_NAME} commands? Get help:\n  ${PROJECT_NAME} --help`,
 export const LOG = {
 // TODO: Cleanup
 //   ASK_PROJECT_ID: `What is your GCP projectId?`,
-//   NOT_LOGGED_IN: 'You are not logged in.',
+  NOT_LOGGED_IN: 'You are not logged in.',
+// TODO: Cleanup
 //   LOGGED_IN_UNKNOWN: 'You are logged in as an unknown user.',
-//   LOGGED_IN_AS: (email: string) => `You are logged in as ${email}.`,
+  LOGGED_IN_AS: (email: string) => `You are logged in as ${email}.`,
   AUTH_CODE: 'Enter the code from that page here: ',
   // TODO: Make AUTH_PAGE_SUCCESSFUL show an HTML page with something useful!
   AUTH_PAGE_SUCCESSFUL: `Logged in! You may close this page. `, // HTML Redirect Page
@@ -338,7 +338,7 @@ export const logError = (err: any, description = '', code = 1): never => {
 /**
  * Checks if the network is available. Gracefully exits if not.
  */
-/*export TODO: Cleanup*/ async function safeIsOnline() {
+export async function safeIsOnline() {
   // If using a proxy, return true since `isOnline` doesn't work.
   // @see https://github.com/googleapis/google-api-nodejs-client#using-a-proxy
   if (process.env.HTTP_PROXY || process.env.HTTPS_PROXY) {

@@ -2,9 +2,9 @@
  * Clsheets command method bodies.
  */
 import { readJsonSync } from 'fs-extra';
-import { authorize/*, getLoggedInEmail TODO: Cleanup*/ } from '../auth';
+import { authorize, getLoggedInEmail } from '../auth';
 import { FS_OPTIONS } from '../files';
-import { ERROR, LOG, checkIfOnline, hasOauthClientSettings/*, safeIsOnline TODO: Cleanup*/ } from '../utils';
+import { ERROR, LOG, checkIfOnline, hasOauthClientSettings, safeIsOnline } from '../utils';
 
 /**
  * Logs the user in. Saves the client credentials to an either local or global rc file.
@@ -15,20 +15,20 @@ import { ERROR, LOG, checkIfOnline, hasOauthClientSettings/*, safeIsOnline TODO:
  */
 export default async (options: { localhost?: boolean; creds?: string; status?: boolean }) => {
     if (options.status) {
-        throw new Error('Not implemented: d32d278e-3911-46e2-ad00-8134f5ae8f38'); // TODO: Cleanup
-        // if (hasOauthClientSettings()) {
-        //   const email = (await safeIsOnline()) ? await getLoggedInEmail() : undefined;
-        //
-        //   if (!!email) {
-        //     console.log(LOG.LOGGED_IN_AS(email));
-        //   } else {
-        //     console.log(LOG.LOGGED_IN_UNKNOWN);
-        //   }
-        // } else {
-        //   console.log(LOG.NOT_LOGGED_IN);
-        // }
-        //
-        // process.exit(0);
+        if (hasOauthClientSettings()) {
+            const email = (await safeIsOnline()) ? await getLoggedInEmail() : undefined;
+
+            if (!!email) {
+              console.log(LOG.LOGGED_IN_AS(email));
+            } else {
+              throw new Error('Not implemented: e9431a40-6e0a-4f96-bbe4-1c28fe23a573'); // TODO: Cleanup
+              // console.log(LOG.LOGGED_IN_UNKNOWN);
+            }
+        } else {
+            console.log(LOG.NOT_LOGGED_IN);
+        }
+
+        process.exit(0);
     } else {
         // Local vs global checks
         const isLocalLogin = !!options.creds;
