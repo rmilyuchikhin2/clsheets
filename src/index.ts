@@ -36,8 +36,8 @@ import defaultCmd from './commands/defaultCmd';
 // import help from './commands/help';
 // import list from './commands/list';
 import login from './commands/login';
+import logout from './commands/logout';
 // TODO: Cleanup
-// import logout from './commands/logout';
 // import logs from './commands/logs';
 // import openCmd from './commands/openCmd';
 // import pull from './commands/pull';
@@ -77,17 +77,17 @@ commander
   .option('--status', 'Print who is logged in')
   .action(handleError(login));
 
+/**
+ * Logs out the user by deleteing client credentials.
+ * @name logout
+ * @example logout
+ */
+commander
+  .command('logout')
+  .description('Log out')
+  .action(handleError(logout));
+
 // TODO: Cleanup
-// /**
-//  * Logs out the user by deleteing client credentials.
-//  * @name logout
-//  * @example logout
-//  */
-// commander
-//   .command('logout')
-//   .description('Log out')
-//   .action(handleError(logout));
-//
 // /**
 //  * Creates a new script project.
 //  * @name create
